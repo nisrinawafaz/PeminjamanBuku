@@ -12,6 +12,19 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    public function peminjaman()
+    {
+        return $this->hasMany(History_Peminjaman::class);
+    }
+    public function favorite()
+    {
+        return $this->hasMany(Favorite::class);
+    }
+    public function rating()
+    {
+        return $this->hasMany(History_Rating::class);
+    }
+
     /**
      * The attributes that are mass assignable.
      *
