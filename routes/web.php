@@ -4,6 +4,7 @@ use App\Http\Controllers\AkunController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\BukuController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,8 +37,19 @@ Route::group(['prefix' => 'dashboard/admin'], function () {
         ->group(function () {
             Route::get('/', 'index')->name('index');
             Route::post('showdata', 'dataTable')->name('dataTable');
-            Route::match(['get','post'],'tambah', 'tambahAkun')->name('add');
-            Route::match(['get','post'],'{id}/ubah', 'ubahAkun')->name('edit');//tes
+            Route::match(['get', 'post'], 'tambah', 'tambahAkun')->name('add');
+            Route::match(['get', 'post'], '{id}/ubah', 'ubahAkun')->name('edit');
             Route::delete('{id}/hapus', 'hapusAkun')->name('delete');
+        });
+
+    Route::controller(BukuController::class)
+        ->prefix('buku')
+        ->as('buku.')
+        ->group(function () {
+            //Route::get('/', 'index')->name('index');
+            //Route::post('showdata', 'dataTable')->name('dataTable');
+            Route::match(['get', 'post'], '/tambahBuku', 'tambahBuku')->name('add');
+            //Route::match(['get', 'post'], '{id}/ubah', 'ubahAkun')->name('edit');
+            //Route::delete('{id}/hapus', 'hapusAkun')->name('delete');
         });
 });
