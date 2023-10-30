@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('idPenerbit');
             $table->unsignedBigInteger('idGenre');
             $table->string('judul');
-            $table->date('tahun_terbit');
+            $table->integer('tahun_terbit');
             $table->text('deskripsi');
             $table->string('path_file');
             $table->integer('stok');

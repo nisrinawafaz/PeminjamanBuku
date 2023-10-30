@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Buku;
+use App\Models\Penulis;
+use App\Models\Penerbit;
+use App\Models\Genre;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -12,6 +15,10 @@ class BukuController extends Controller
 {
     public function tambahBuku(Request $request)
     {
+        $genre = Genre::all();
+        $penulis = Penulis::all();
+        $penerbit = Penerbit::all();
+
         if ($request->isMethod('post')) {
 
             $this->validate($request, [
@@ -19,7 +26,7 @@ class BukuController extends Controller
                 'idPenerbit'=> 'required',
                 'idGenre'=> 'required',
                 'judul'=> 'required',
-                'tahun_terbit'=> 'required',
+                'tahun_terbit' => 'required|integer|min:1900|max:' . date('Y'),
                 'deskripsi'=> 'required',
                 'path_file'=> 'file|mimes:pdf,doc,docx|max:2048',
                 'stok'=> 'required',
@@ -51,22 +58,14 @@ class BukuController extends Controller
                 'harga_harian'=> $request->harga,
                 'gambar_cover'=> $img
             ]);
-    
-            if ($buku) {
-                return redirect()
+            return redirect()
                     ->route('buku.add')
                     ->with([
                         'success' => 'New post has been created successfully'
                     ]);
-            } else {
-                return redirect()
-                    ->back()
-                    ->withInput()
-                    ->with([
-                        'error' => 'Some problem occurred, please try again'
-                    ]);
-            }
         }
-        return view('page.admin.buku.addBuku');
+        return view('page.admin.buku.addBuku', compact('genre'))
+            ->with('penulis', $penulis)
+            ->with('penerbit', $penerbit);
     }
 }
