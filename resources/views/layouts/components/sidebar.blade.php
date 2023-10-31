@@ -31,7 +31,7 @@ $links = [
             [
                 "section_text" => "Data Buku",
                 "section_icon" => "far fa-circle",
-                "section_href" => route('akun.index')
+                "section_href" => route('buku.tabel')
             ],
             [
                 "section_text" => "Tambah Buku",

@@ -15,7 +15,7 @@ class Buku extends Model
     }
     public function genre()
     {
-        return $this->belongsTo(Genre::class);
+        return $this->belongsTo(Genre::class, 'idGenre', 'idGenre');
     }
     public function penerbit()
     {

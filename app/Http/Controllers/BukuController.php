@@ -68,4 +68,10 @@ class BukuController extends Controller
             ->with('penulis', $penulis)
             ->with('penerbit', $penerbit);
     }
+
+    public function tampilBuku()
+    {
+        $buku = Buku::all();
+        return view('page.admin.buku.tabelBuku', compact('buku'));
+    }
 }
