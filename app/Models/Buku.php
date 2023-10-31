@@ -39,6 +39,7 @@ class Buku extends Model
      *
      * @var array<int, string>
      */
+    protected $primaryKey = 'idBuku';
     protected $fillable = [
         'idPenulis',
         'idPenerbit',

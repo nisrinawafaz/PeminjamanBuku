@@ -21,7 +21,7 @@ class BukuController extends Controller
 
         if ($request->isMethod('post')) {
 
-            $this->validate($request, [
+            /*$this->validate($request, [
                 'idPenulis'=> 'required',
                 'idPenerbit'=> 'required',
                 'idGenre'=> 'required',
@@ -32,7 +32,7 @@ class BukuController extends Controller
                 'stok'=> 'required',
                 'harga_harian'=> 'required',
                 'gambar_cover'=> 'image|mimes:jpg,png,jpeg,gif,svg|max:1024'
-            ]);
+            ]);*/
             $img = null;
             if ($request->file('cover')) {
                 $nama_gambar = time() . '_' . $request->file('cover')->getClientOriginalName();
