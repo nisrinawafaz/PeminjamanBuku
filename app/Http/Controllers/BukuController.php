@@ -21,18 +21,18 @@ class BukuController extends Controller
 
         if ($request->isMethod('post')) {
 
-            /*$this->validate($request, [
-                'idPenulis'=> 'required',
-                'idPenerbit'=> 'required',
-                'idGenre'=> 'required',
+            $this->validate($request, [
+                'id_penulis'=> 'required',
+                'id_penerbit'=> 'required',
+                'id_genre'=> 'required',
                 'judul'=> 'required',
                 'tahun_terbit' => 'required|integer|min:1900|max:' . date('Y'),
                 'deskripsi'=> 'required',
-                'path_file'=> 'file|mimes:pdf,doc,docx|max:2048',
+                'file_buku'=> 'file|mimes:pdf,doc,docx|max:2048',
                 'stok'=> 'required',
-                'harga_harian'=> 'required',
-                'gambar_cover'=> 'image|mimes:jpg,png,jpeg,gif,svg|max:1024'
-            ]);*/
+                'harga'=> 'required',
+                'cover'=> 'image|mimes:jpg,png,jpeg,gif,svg|max:1024'
+            ]);
             $img = null;
             if ($request->file('cover')) {
                 $nama_gambar = time() . '_' . $request->file('cover')->getClientOriginalName();
