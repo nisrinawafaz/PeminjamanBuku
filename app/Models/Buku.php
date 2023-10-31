@@ -11,7 +11,7 @@ class Buku extends Model
 
     public function penulis()
     {
-        return $this->belongsTo(Penulis::class);
+        return $this->belongsTo(Penulis::class, 'idPenulis', 'idPenulis');
     }
     public function genre()
     {
@@ -19,7 +19,7 @@ class Buku extends Model
     }
     public function penerbit()
     {
-        return $this->belongsTo(Penerbit::class);
+        return $this->belongsTo(Penerbit::class, 'idPenerbit', 'idPenerbit');
     }
     public function peminjaman()
     {

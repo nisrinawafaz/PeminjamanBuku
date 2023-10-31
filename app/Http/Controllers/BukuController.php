@@ -74,4 +74,30 @@ class BukuController extends Controller
         $buku = Buku::all();
         return view('page.admin.buku.tabelBuku', compact('buku'));
     }
+    
+    public function bukaBuku($id)
+    {
+        // Ambil data buku berdasarkan ID dari database
+        $buku = Buku::find($id);
+
+        if (!$buku) {
+            // Redirect atau tampilkan pesan jika buku tidak ditemukan
+            return redirect()->route('buku.tabel')->with('error', 'Buku tidak ditemukan');
+        }
+
+        return view('page.admin.buku.bukaFileBuku', compact('buku'));
+    }
+
+    public function detail($id)
+    {
+        // Ambil data buku berdasarkan ID dari database
+        $buku = Buku::find($id);
+
+        if (!$buku) {
+            // Redirect atau tampilkan pesan jika buku tidak ditemukan
+            return redirect()->route('buku.tabel')->with('error', 'Buku tidak ditemukan');
+        }
+
+        return view('page.admin.buku.detailBuku', compact('buku'));
+    }
 }
