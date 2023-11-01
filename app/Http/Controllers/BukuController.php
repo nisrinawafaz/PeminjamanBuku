@@ -45,7 +45,7 @@ class BukuController extends Controller
                 $nama_file = time() . '_' . $request->file('file_buku')->getClientOriginalName();
                 $upload = $request->file_buku->storeAs('public/admin/file_buku', $nama_file);
                 $file_buku = Storage::url($upload);
-            }            
+            }
             $buku = Buku::create([
                 'idPenulis'=> $request->id_penulis,
                 'idPenerbit'=> $request->id_penerbit,
@@ -147,4 +147,50 @@ class BukuController extends Controller
 
     }
 
+    public function bukaBuku($id)
+    {
+        // Ambil data buku berdasarkan ID dari database
+        $buku = Buku::find($id);
+
+        if (!$buku) {
+            // Redirect atau tampilkan pesan jika buku tidak ditemukan
+            return redirect()->route('buku.tabel')->with('error', 'Buku tidak ditemukan');
+        }
+
+        return view('page.admin.buku.bukaFileBuku', compact('buku'));
+    }
+
+    public function detail($id)
+    {
+        // Ambil data buku berdasarkan ID dari database
+        $buku = Buku::find($id);
+
+        if (!$buku) {
+            // Redirect atau tampilkan pesan jika buku tidak ditemukan
+            return redirect()->route('buku.tabel')->with('error', 'Buku tidak ditemukan');
+        }
+
+        return view('page.admin.buku.detailBuku', compact('buku'));
+    }
+
+    public function hapusBuku($id)
+    {
+        $buku = Buku::find($id);
+
+        if (!$buku) {
+            return redirect()->route('buku.tabel')->with('error', 'Buku tidak ditemukan');
+        }
+
+        if ($buku->gambar_cover) {
+            Storage::delete('public/admin/cover_buku/' . basename($buku->gambar_cover));
+        }
+
+        if ($buku->path_file) {
+            Storage::delete('public/admin/file_buku/' . basename($buku->path_file));
+        }
+
+        $buku->delete($id);
+
+        return redirect()->route('buku.tabel')->with('success', 'Buku berhasil dihapus');
+    }
 }

@@ -47,8 +47,11 @@ Route::group(['prefix' => 'dashboard/admin'], function () {
             ->as('buku.')
             ->group(function () {
                 Route::get('/tabelBuku', 'tampilBuku')->name('tabel');
-                // Route::post('/dataTable', 'BukuController@dataTable')->name('dataTable');
+                Route::get('/buku/{id}', 'detail')->name('detail');
+            Route::get('/file/{id}', 'bukaBuku')->name('file');
+            // Route::post('/dataTable', 'BukuController@dataTable')->name('dataTable');
                 Route::match(['get', 'post'], '/tambahBuku', 'tambahBuku')->name('add');
+            Route::delete('/buku/hapus/{id}', 'hapusBuku')->name('hapus');
                 Route::match(['get', 'post'], '{id}/ubah', 'ubahBuku')->name('edit');
                 //Route::delete('{id}/hapus', 'hapusBuku')->name('delete');
             });
