@@ -97,70 +97,72 @@ class BukuController extends Controller
         $penerbit = Penerbit::all();
         $buku = Buku::findOrFail($id);
 
-        if ($request->isMethod('post')){
+        try {
+            if ($request->isMethod('post')) {
+                $this->validate($request, [
+                    'id_penulis' => 'required',
+                    'id_penerbit' => 'required',
+                    'id_genre' => 'required',
+                    'judul' => 'required',
+                    'tahun_terbit' => 'required|integer|min:1900|max:' . date('Y'),
+                    'deskripsi' => 'required',
+                    'file_buku' => 'file|mimes:pdf,doc,docx|max:2048',
+                    'stok' => 'required',
+                    'harga' => 'required',
+                    'cover' => 'image|mimes:jpg,png,jpeg,gif,svg|max:1024',
+                ]);
 
-        $this->validate($request, [
-            'id_penulis' => 'required',
-            'id_penerbit' => 'required',
-            'id_genre' => 'required',
-            'judul' => 'required',
-            'tahun_terbit' => 'required|integer|min:1900|max:' . date('Y'),
-            'deskripsi' => 'required',
-            'file_buku' => 'file|mimes:pdf,doc,docx|max:2048',
-            'stok' => 'required',
-            'harga' => 'required',
-            'cover' => 'image|mimes:jpg,png,jpeg,gif,svg|max:1024',
-        ]);
+                $img = $buku->gambar_cover; 
+                if ($request->file('cover')) {
+                    if ($img && Storage::exists($img)) {
+                        Storage::delete($img);
+                    }
+                    $nama_gambar = time() . '_' . $request->file('cover')->getClientOriginalName();
+                    $upload = $request->cover->storeAs('public/admin/cover_buku', $nama_gambar);
+                    $img = Storage::url($upload);
+                }
 
-        
-        $img = $buku->gambar_cover; 
-        if ($request->file('cover')) {
-            if ($img && file_exists(public_path() . $img)) {
-                unlink(public_path() . $img);
+                $file_buku = $buku->path_file; 
+                if ($request->file('file_buku')) {
+                    if ($file_buku && Storage::exists($file_buku)) {
+                        Storage::delete($file_buku);
+                    }
+                    $nama_file = time() . '_' . $request->file('file_buku')->getClientOriginalName();
+                    $upload = $request->file_buku->storeAs('public/admin/file_buku', $nama_file);
+                    $file_buku = Storage::url($upload);
+                }
+
+                $buku->update([
+                    'idPenulis' => $request->id_penulis,
+                    'idPenerbit' => $request->id_penerbit,
+                    'idGenre' => $request->id_genre,
+                    'judul' => $request->judul,
+                    'tahun_terbit' => $request->tahun_terbit,
+                    'deskripsi' => $request->deskripsi,
+                    'path_file' => $file_buku,
+                    'stok' => $request->stok,
+                    'harga_harian' => $request->harga,
+                    'gambar_cover' => $img,
+                ]);
+
+                $buku = Buku::all();
+                return view('page.admin.buku.tabelBuku', compact('buku'));
             }
-            $nama_gambar = time() . '_' . $request->file('cover')->getClientOriginalName();
-            $upload = $request->cover->storeAs('public/admin/cover_buku', $nama_gambar);
-            $img = Storage::url($upload);
+        } catch (\Throwable $th) {
+            Log::error($th);
+            $error = $th->getMessage();
+            return redirect()->route('buku.edit', ['id' => $id])
+                ->with('error', $error);
         }
 
-        
-        $file_buku = $buku->path_file; 
-        if ($request->file('file_buku')) {
-            if ($file_buku && file_exists(public_path() . $file_buku)) {
-                unlink(public_path() . $file_buku);
-            }
-            $nama_file = time() . '_' . $request->file('file_buku')->getClientOriginalName();
-            $upload = $request->file_buku->storeAs('public/admin/file_buku', $nama_file);
-            $file_buku = Storage::url($upload);
-        }
-
-
-        $buku->update([
-            'idPenulis' => $request->id_penulis,
-            'idPenerbit' => $request->id_penerbit,
-            'idGenre' => $request->id_genre,
-            'judul' => $request->judul,
-            'tahun_terbit' => $request->tahun_terbit,
-            'deskripsi' => $request->deskripsi,
-            'path_file' => $file_buku,
-            'stok' => $request->stok,
-            'harga_harian' => $request->harga,
-            'gambar_cover' => $img,
-        ]);
-
-        $buku = Buku::all();
-        return view('page.admin.buku.tabelBuku', compact('buku'));
-
-
-        }
         return view('page.admin.buku.ubahBuku', [
             'buku' => $buku,
             'genre' => $genre,
             'penerbit' => $penerbit,
             'penulis' => $penulis
-        ], );
-
+        ]);
     }
+
 
     public function bukaBuku($id)
     {

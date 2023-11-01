@@ -142,9 +142,10 @@
                                     id="inputGambar"
                                     name="cover"
                                     class="form-control @error('cover') is-invalid @enderror"
-                                    value="{{ $buku->gambar_cover }}"
+                                    @if($buku->gambar_cover) value="{{ $buku->gambar_cover }}" @endif
                                     required="required"
                                     autocomplete="cover">
+                                    <img id="cover-preview" src="{{ $buku->gambar_cover }}" alt="Cover Preview" style="max-width: 200px; max-height: 200px;">
                                     @error('cover')
                                     <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -160,7 +161,7 @@
                                     id="inputFile"
                                     name="file_buku"
                                     class="form-control @error('file_buku') is-invalid @enderror"
-                                    value="{{ $buku->file_buku }}"
+                                    @if($buku->path_file) value="{{ $buku->path_file }}" @endif
                                     required="required"
                                     autocomplete="file_buku">
                                     @error('file_buku')
@@ -177,7 +178,7 @@
                                 <label for="inputGenre">Genre</label>
                                 <select class="form-select" aria-label="Default select example" name="id_genre" id="inputGenre">
                                     @foreach($genre as $g)
-                                        <option value="{{  $g->idGenre }}">{{ $g->nama_genre }}</option>
+                                    <option value="{{  $g->idGenre }}" @if($g->idGenre == $buku->idGenre) selected @endif>{{ $g->nama_genre }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -187,7 +188,7 @@
                                 <label for="inputPenerbit">Penerbit</label>
                                 <select class="form-select" aria-label="Default select example" name="id_penerbit" id="inputPenerbit">
                                     @foreach($penerbit as $p)
-                                        <option value="{{  $p->idPenerbit }}">{{ $p->perusahaan }}</option>
+                                        <option value="{{  $p->idPenerbit }}" @if($p->idPenerbit == $buku->idPenerbit) selected @endif>{{ $p->perusahaan }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -197,7 +198,7 @@
                         <label for="inputPenulis">Penulis</label>
                         <select class="form-select" aria-label="Default select example" name="id_penulis" id="inputPenulis">
                         @foreach($penulis as $writer)
-                            <option value="{{  $writer->idPenulis }}">{{ $writer->nama_lengkap }}</option>
+                            <option value="{{  $writer->idPenulis }}" @if($writer->idPenulis == $buku->idPenulis) selected @endif>{{ $writer->nama_lengkap }}</option>
                         @endforeach
                         </select>
                     </div>
