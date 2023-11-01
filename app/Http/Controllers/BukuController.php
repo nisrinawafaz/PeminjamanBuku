@@ -11,63 +11,76 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Exception;
+use Illuminate\Support\Facades\DB;
 
 class BukuController extends Controller
 {
     public function tambahBuku(Request $request)
     {
-        $genre = Genre::all();
+
+        DB::enableQueryLog(); // Aktifkan query log
+
+        $genre = genre::all();
         $penulis = Penulis::all();
         $penerbit = Penerbit::all();
+        try {
+            if ($request->isMethod('post')) {
+                $this->validate($request, [
+                    'id_penulis' => 'required',
+                    'id_penerbit' => 'required',
+                    'id_genre' => 'required',
+                    'judul' => 'required',
+                    'tahun_terbit' => 'required|integer|min:1900|max:' . date('Y'),
+                    'deskripsi' => 'required',
+                    'file_buku' => 'file|mimes:pdf,doc,docx|max:2048',
+                    'stok' => 'required',
+                    'harga' => 'required',
+                    'cover' => 'image|mimes:jpg,png,jpeg,gif,svg|max:1024',
+                ]);
+                $img = null;
+                if ($request->file('cover')) {
+                    $nama_gambar = time() . '_' . $request->file('cover')->getClientOriginalName();
+                    $upload = $request->cover->storeAs('public/admin/cover_buku', $nama_gambar);
+                    $img = Storage::url($upload);
+                }
 
-        if ($request->isMethod('post')) {
+                $file_buku = null;
+                if ($request->file('file_buku')) {
+                    $nama_file = time() . '_' . $request->file('file_buku')->getClientOriginalName();
+                    $upload = $request->file_buku->storeAs('public/admin/file_buku', $nama_file);
+                    $file_buku = Storage::url($upload);
+                }
+                $buku = Buku::create([
+                    'idPenulis' => $request->id_penulis,
+                    'idPenerbit' => $request->id_penerbit,
+                    'idGenre' => $request->id_genre,
+                    'judul' => $request->judul,
+                    'tahun_terbit' => $request->tahun_terbit,
+                    'deskripsi' => $request->deskripsi,
+                    'path_file' => $file_buku,
+                    'stok' => $request->stok,
+                    'harga_harian' => $request->harga,
+                    'gambar_cover' => $img
+                ]);
 
-            $this->validate($request, [
-                'id_penulis'=> 'required',
-                'id_penerbit'=> 'required',
-                'id_genre'=> 'required',
-                'judul'=> 'required',
-                'tahun_terbit' => 'required|integer|min:1900|max:' . date('Y'),
-                'deskripsi'=> 'required',
-                'file_buku'=> 'file|mimes:pdf,doc,docx|max:2048',
-                'stok'=> 'required',
-                'harga'=> 'required',
-                'cover'=> 'image|mimes:jpg,png,jpeg,gif,svg|max:1024'
-            ]);
-            $img = null;
-            if ($request->file('cover')) {
-                $nama_gambar = time() . '_' . $request->file('cover')->getClientOriginalName();
-                $upload = $request->cover->storeAs('public/admin/cover_buku', $nama_gambar);
-                $img = Storage::url($upload);
-            }
-
-            $file_buku = null;
-            if ($request->file('file_buku')) {
-                $nama_file = time() . '_' . $request->file('file_buku')->getClientOriginalName();
-                $upload = $request->file_buku->storeAs('public/admin/file_buku', $nama_file);
-                $file_buku = Storage::url($upload);
-            }
-            $buku = Buku::create([
-                'idPenulis'=> $request->id_penulis,
-                'idPenerbit'=> $request->id_penerbit,
-                'idGenre'=> $request->id_genre,
-                'judul'=> $request->judul,
-                'tahun_terbit'=> $request->tahun_terbit,
-                'deskripsi'=> $request->deskripsi,
-                'path_file'=> $file_buku,
-                'stok'=> $request->stok,
-                'harga_harian'=> $request->harga,
-                'gambar_cover'=> $img
-            ]);
-            return redirect()
-                    ->route('buku.add')
+                dd(\DB::getQueryLog()); // Tampilkan log query
+                return redirect()
+                    ->route('buku.tabel')
                     ->with([
                         'success' => 'New post has been created successfully'
                     ]);
+            }
+        } catch (\Throwable $th) {
+            \Log::error($th);
+            $error = $th->getMessage();
+            return redirect()->route('buku.add')
+                ->with('error', $error);
         }
         return view('page.admin.buku.addBuku', compact('genre'))
             ->with('penulis', $penulis)
             ->with('penerbit', $penerbit);
+
     }
 
     public function tampilBuku()
