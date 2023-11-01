@@ -120,7 +120,7 @@
                                     name="harga"
                                     class="form-control @error('harga') is-invalid @enderror"
                                     placeholder="harga /hari"
-                                    value="{{ $buku->harga }}"
+                                    value="{{ $buku->harga_harian }}"
                                     required="required"
                                     autocomplete="harga">
                                     @error('harga')
@@ -142,7 +142,7 @@
                                     id="inputGambar"
                                     name="cover"
                                     class="form-control @error('cover') is-invalid @enderror"
-                                    value="{{ $buku->cover }}"
+                                    value="{{ $buku->gambar_cover }}"
                                     required="required"
                                     autocomplete="cover">
                                     @error('cover')
