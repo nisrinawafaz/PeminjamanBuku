@@ -33,7 +33,7 @@
                     <img
                         class="elevation-3 mx-auto"
                         id="prevImg"
-                        src="{{ asset('storage/admin/CoverBuku/default.png') }}"
+                        src='<?php echo $buku->gambar_cover; ?>'
                         width="200px"
                         style="display: block;"
                     />
