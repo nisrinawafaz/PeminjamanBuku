@@ -46,34 +46,50 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <table id="previewBuku" class="table table-striped table-bordered display" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>Judul</th>
-                                    <th>Deskripsi</th>
-                                    <th>Genre</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($buku as $item)
-                                <tr>
-                                    <td>{{ $item->judul }}</td>
-                                    <td>{{ $item->deskripsi }}</td>
-                                    <td>{{ $item->genre->nama_genre }}</td>
-                                    <td>
-                                        <a href="{{ route('buku.detail', $item->idBuku) }}" class="btn btn-warning"><i class="fas fa-info-circle"></i></a>
-                                        <a href="{{ route('buku.edit', ['id' => $item->idBuku]) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
-                                        <a href="{{ route('buku.hapus', $item->idBuku) }}" class="btn btn-danger" onclick="event.preventDefault(); document.getElementById('delete-form').submit();"><i class="fas fa-trash"></i></a>
-                                        <form id="delete-form" action="{{ route('buku.hapus', $item->idBuku) }}" method="POST" style="display: none;">
-                                        @csrf
-                                        @method('delete')
-</form>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                        @if ($buku->isEmpty())
+                            <p>Tidak ada buku yang tersedia.</p>
+                        @else
+                            <table id="previewBuku" class="table table-striped table-bordered display" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Judul</th>
+                                        <th>Deskripsi</th>
+                                        <th>Genre</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($buku as $item)
+                                    <tr>
+                                        <td>{{ $item->judul }}</td>
+                                        <td>{{ $item->deskripsi }}</td>
+                                        <td>
+                                            @if ($item->genre)
+                                                {{ $item->genre->nama_genre }}
+                                            @else
+                                                <span class="text-danger">Genre tidak tersedia.</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if (!$buku->isEmpty())
+                                                <a href="{{ route('buku.detail', $item->idBuku) }}" class="btn btn-warning"><i class="fas fa-info-circle"></i></a>
+                                                <a href="{{ route('buku.edit', ['id' => $item->idBuku]) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                                                <a href="{{ route('buku.hapus', $item->idBuku) }}" class="btn btn-danger" 
+                                                   onclick="event.preventDefault(); document.getElementById('delete-form').submit();">
+                                                   <i class="fas fa-trash"></i></a>
+                                                <form id="delete-form" action="{{ route('buku.hapus', $item->idBuku) }}" method="POST" style="display: none;">
+                                                    @csrf
+                                                    @method('delete')
+                                                </form>
+                                            @else
+                                                <span class="text-danger">Tidak ada buku yang tersedia.</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        @endif
                     </div>
                 </div>
             </div>

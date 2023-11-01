@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class BukuController extends Controller
 {
@@ -71,6 +72,7 @@ class BukuController extends Controller
 
     public function tampilBuku()
     {
+        Log::info('Menampilkan daftar buku'); // Log info message
         $buku = Buku::all();
         return view('page.admin.buku.tabelBuku', compact('buku'));
     }
@@ -153,9 +155,14 @@ class BukuController extends Controller
         $buku = Buku::find($id);
 
         if (!$buku) {
+            // Log error message
+            Log::error('Buku tidak ditemukan dengan ID: ' . $id);
+            
             // Redirect atau tampilkan pesan jika buku tidak ditemukan
             return redirect()->route('buku.tabel')->with('error', 'Buku tidak ditemukan');
         }
+
+        Log::info('Membuka buku dengan ID: ' . $id); // Log info message
 
         return view('page.admin.buku.bukaFileBuku', compact('buku'));
     }
@@ -166,9 +173,14 @@ class BukuController extends Controller
         $buku = Buku::find($id);
 
         if (!$buku) {
+            // Log error message
+            Log::error('Buku tidak ditemukan dengan ID: ' . $id);
+            
             // Redirect atau tampilkan pesan jika buku tidak ditemukan
             return redirect()->route('buku.tabel')->with('error', 'Buku tidak ditemukan');
         }
+
+        Log::info('Melihat detail buku dengan ID: ' . $id); // Log info message
 
         return view('page.admin.buku.detailBuku', compact('buku'));
     }

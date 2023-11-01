@@ -26,7 +26,14 @@
 <!-- Main content -->
 <section class="content">
     <div class="card">
-        <iframe src='<?php echo $buku->path_file; ?>' style="width:100%; height:600px;"></iframe>
+        @if ($buku)
+            <iframe src="{{ $buku->path_file }}" style="width:100%; height:600px;"></iframe>
+        @else
+            <div class="alert alert-danger">
+                Buku tidak ditemukan.
+            </div>
+        @endif
     </div>
 </section>
+
 @endsection
