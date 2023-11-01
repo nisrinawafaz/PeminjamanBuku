@@ -63,8 +63,10 @@
                                     <td>{{ $item->genre->nama_genre }}</td>
                                     <td>
                                         <a href="#" class="btn btn-warning"><i class="fas fa-info-circle"></i></a>
-                                        <a href="#" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                                        
+                                        <a href="{{ route('buku.edit', ['id' => $item->idBuku]) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
                                         <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                        
                                     </td>
                                 </tr>
                                 @endforeach
