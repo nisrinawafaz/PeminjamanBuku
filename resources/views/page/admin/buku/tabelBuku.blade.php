@@ -64,7 +64,11 @@
                                     <td>
                                         <a href="{{ route('buku.detail', $item->idBuku) }}" class="btn btn-warning"><i class="fas fa-info-circle"></i></a>
                                         <a href="#" class="btn btn-primary"><i class="fas fa-edit"></i></a>
-                                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                        <a href="{{ route('buku.hapus', $item->idBuku) }}" class="btn btn-danger" onclick="event.preventDefault(); document.getElementById('delete-form').submit();"><i class="fas fa-trash"></i></a>
+                                        <form id="delete-form" action="{{ route('buku.hapus', $item->idBuku) }}" method="POST" style="display: none;">
+                                        @csrf
+                                        @method('delete')
+</form>
                                     </td>
                                 </tr>
                                 @endforeach
