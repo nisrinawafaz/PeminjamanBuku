@@ -103,21 +103,8 @@ class BukuController extends Controller
 
     public function hapusBuku($id)
     {
-        $buku = Buku::find($id);
-
-        if (!$buku) {
-            return redirect()->route('buku.tabel')->with('error', 'Buku tidak ditemukan');
-        }
-
-        if ($buku->gambar_cover) {
-            Storage::delete('public/admin/cover_buku/' . basename($buku->gambar_cover));
-        }
-
-        if ($buku->path_file) {
-            Storage::delete('public/admin/file_buku/' . basename($buku->path_file));
-        }
-
-        $buku->delete($id);
+        $buku = Buku::findOrFail($id);
+        $buku -> delete();
 
         return redirect()->route('buku.tabel')->with('success', 'Buku berhasil dihapus');
     }
