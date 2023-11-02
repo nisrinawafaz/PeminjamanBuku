@@ -42,17 +42,17 @@ Route::group(['prefix' => 'dashboard/admin'], function () {
             Route::delete('{id}/hapus', 'hapusAkun')->name('delete');
         });
 
-    Route::controller(BukuController::class)
-        ->prefix('buku')
-        ->as('buku.')
-        ->group(function () {
-            Route::get('/tabelBuku', 'tampilBuku')->name('tabel');
-            Route::get('/buku/{id}', 'detail')->name('detail');
+        Route::controller(BukuController::class)
+            ->prefix('buku')
+            ->as('buku.')
+            ->group(function () {
+                Route::get('/tabelBuku', 'tampilBuku')->name('tabel');
+                Route::get('/buku/{id}', 'detail')->name('detail');
             Route::get('/file/{id}', 'bukaBuku')->name('file');
             // Route::post('/dataTable', 'BukuController@dataTable')->name('dataTable');
-            Route::match(['get', 'post'], '/tambahBuku', 'tambahBuku')->name('add');
+                Route::match(['get', 'post'], '/tambahBuku', 'tambahBuku')->name('add');
             Route::delete('{id}/buku/hapus/', 'hapusBuku')->name('hapus');
-            //Route::match(['get', 'post'], '{id}/ubah', 'ubahAkun')->name('edit');
-            //Route::delete('{id}/hapus', 'hapusAkun')->name('delete');
-        });
+                Route::match(['get', 'post'], '{id}/ubah', 'ubahBuku')->name('edit');
+                //Route::delete('{id}/hapus', 'hapusBuku')->name('delete');
+            });
 });
