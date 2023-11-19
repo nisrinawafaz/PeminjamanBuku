@@ -23,6 +23,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('/etalaseBuku', [BukuController::class, 'etalaseBuku'])->name('etalaseBuku');
+
 Route::group(['prefix' => 'dashboard/admin'], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
 

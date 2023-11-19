@@ -90,6 +90,13 @@ class BukuController extends Controller
         return view('page.admin.buku.tabelBuku', compact('buku'));
     }
 
+    public function etalaseBuku()
+    {
+        Log::info('Menampilkan daftar buku ke user'); // Log info message
+        $buku = Buku::all();
+        return view('page.user.buku.etalaseBuku', compact('buku'));
+    }
+
     public function UbahBuku(Request $request, $id)
     {
         $genre = Genre::all();

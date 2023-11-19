@@ -1,0 +1,56 @@
+body{
+    background-color: #C6EAFF;
+  }
+  
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+    padding: 2px;
+  }
+  
+  .grid-all {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    padding: 2px;
+  }
+  
+  .grid-menu {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 30px;
+    padding: 2px;
+  }
+  
+  input, button {
+    width: 100%;
+  }
+  
+  .card-img-cart {
+    width: 50px;
+  }
+  
+  ul {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    list-style: none;
+  }
+  
+  .center-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .chart {
+    padding: 20px;
+  }
+  
+  .title-text {
+    font-family: 'Lilita One', cursive;
+    font-size: 30px;
+    text-align: center;
+  }
