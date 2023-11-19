@@ -55,4 +55,14 @@ Route::group(['prefix' => 'dashboard/admin'], function () {
                 Route::match(['get', 'post'], '{id}/ubah', 'ubahBuku')->name('edit');
                 //Route::delete('{id}/hapus', 'hapusBuku')->name('delete');
             });
+
+        Route::controller(GenreController::class)
+            ->prefix('genre')
+            ->as('genre.')
+            ->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::match(['get', 'post'], 'tambah', 'tambahGenre')->name('add');
+                Route::match(['get', 'post'], '{id}/ubah', 'ubahGenre')->name('edit');
+                Route::delete('{id}/hapus', 'hapusGenre')->name('delete');
+            });
 });
