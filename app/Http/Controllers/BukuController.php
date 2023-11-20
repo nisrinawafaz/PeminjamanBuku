@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use DataTables;
 
 class BukuController extends Controller
 {
@@ -83,11 +84,29 @@ class BukuController extends Controller
 
     }
 
-    public function tampilBuku()
+    public function index(Request $request)
     {
-        Log::info('Menampilkan daftar buku'); // Log info message
-        $buku = Buku::all();
-        return view('page.admin.buku.tabelBuku', compact('buku'));
+        if ($request->ajax()) {
+            $data = DB::table('bukus')->select('*');
+            return Datatables::of($data)
+                ->addColumn('options', function ($row) {
+                    $detailUrl = route('buku.detail', $row->idBuku);
+                    $editUrl = route('buku.edit', ['idBuku' => $row->idBuku]);
+                    $deleteUrl = route('buku.hapus', $row->idBuku);
+
+                    return '<a href="' . $detailUrl . '" class="btn btn-warning"><i class="fas fa-info-circle"></i></a>
+                            <a href="' . $editUrl . '" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                            <a href="' . $deleteUrl . '" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                            <form id="delete-form-' . $row->idBuku . '" action="' . $deleteUrl . '" method="POST" style="display: none;">
+                                @csrf
+                                @method(\'delete\')
+                            </form>';
+                })
+                ->rawColumns(['options'])
+                ->make(true);
+        }
+
+        return view('page.admin.buku.tabelBuku');
     }
 
     public function etalaseBuku()
@@ -97,12 +116,12 @@ class BukuController extends Controller
         return view('page.user.buku.etalaseBuku', compact('buku'));
     }
 
-    public function UbahBuku(Request $request, $id)
+    public function UbahBuku(Request $request, $idBuku)
     {
         $genre = Genre::all();
         $penulis = Penulis::all();
         $penerbit = Penerbit::all();
-        $buku = Buku::findOrFail($id);
+        $buku = Buku::findOrFail($idBuku);
 
         try {
             if ($request->isMethod('post')) {
@@ -158,7 +177,7 @@ class BukuController extends Controller
         } catch (\Throwable $th) {
             Log::error($th);
             $error = $th->getMessage();
-            return redirect()->route('buku.edit', ['id' => $id])
+            return redirect()->route('buku.edit', ['id' => $idBuku])
                 ->with('error', $error);
         }
 
@@ -171,45 +190,45 @@ class BukuController extends Controller
     }
 
 
-    public function bukaBuku($id)
+    public function bukaBuku($idBuku)
     {
         // Ambil data buku berdasarkan ID dari database
-        $buku = Buku::find($id);
+        $buku = Buku::find($idBuku);
 
         if (!$buku) {
             // Log error message
-            Log::error('Buku tidak ditemukan dengan ID: ' . $id);
+            Log::error('Buku tidak ditemukan dengan ID: ' . $idBuku);
             
             // Redirect atau tampilkan pesan jika buku tidak ditemukan
-            return redirect()->route('buku.tabel')->with('error', 'Buku tidak ditemukan');
+            return redirect()->route('buku.index')->with('error', 'Buku tidak ditemukan');
         }
 
-        Log::info('Membuka buku dengan ID: ' . $id); // Log info message
+        Log::info('Membuka buku dengan ID: ' . $idBuku); // Log info message
 
         return view('page.admin.buku.bukaFileBuku', compact('buku'));
     }
 
-    public function detail($id)
+    public function detail($idBuku)
     {
         // Ambil data buku berdasarkan ID dari database
-        $buku = Buku::find($id);
+        $buku = Buku::find($idBuku);
 
         if (!$buku) {
             // Log error message
-            Log::error('Buku tidak ditemukan dengan ID: ' . $id);
+            Log::error('Buku tidak ditemukan dengan ID: ' . $idBuku);
             
             // Redirect atau tampilkan pesan jika buku tidak ditemukan
-            return redirect()->route('buku.tabel')->with('error', 'Buku tidak ditemukan');
+            return redirect()->route('buku.index')->with('error', 'Buku tidak ditemukan');
         }
 
-        Log::info('Melihat detail buku dengan ID: ' . $id); // Log info message
+        Log::info('Melihat detail buku dengan ID: ' . $idBuku); // Log info message
 
         return view('page.admin.buku.detailBuku', compact('buku'));
     }
 
-    public function hapusBuku($id)
+    public function hapusBuku($idBuku)
     {
-        $buku = Buku::findOrFail($id);
+        $buku = Buku::findOrFail($idBuku);
         $buku -> delete();
 
         return redirect()->route('buku.tabel')->with('success', 'Buku berhasil dihapus');
