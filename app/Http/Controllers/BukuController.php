@@ -67,7 +67,7 @@ class BukuController extends Controller
 
                 dd(\DB::getQueryLog()); // Tampilkan log query
                 return redirect()
-                    ->route('buku.tabel')
+                    ->route('buku.index')
                     ->with([
                         'success' => 'New post has been created successfully'
                     ]);
@@ -231,6 +231,6 @@ class BukuController extends Controller
         $buku = Buku::findOrFail($idBuku);
         $buku -> delete();
 
-        return redirect()->route('buku.tabel')->with('success', 'Buku berhasil dihapus');
+        return redirect()->route('buku.index')->with('success', 'Buku berhasil dihapus');
     }
 }
