@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BukuController;
+use App\Http\Controllers\PenulisController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +45,20 @@ Route::group(['prefix' => 'dashboard/admin'], function () {
                 Route::delete('{id}/hapus', 'hapusAkun')->name('delete');
             });
 
+        
+        
+        Route::controller(PenulisController::class)
+            ->prefix('penulis')
+            ->as('penulis.')
+            ->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::post('/dataTable', 'dataTable')->name('dataTable');
+                Route::get('/tambah', 'tambahPenulis')->name('add');
+                Route::post('/tambah',  'tambahPenulis');
+                Route::get('/{idPenulis}/ubah', 'ubahPenulis')->name('ubah');
+                Route::put('/{idPenulis}/ubah', 'ubahPenulis');
+                Route::delete('/{idPenulis}/hapus', 'hapusPenulis')->name('hapus');
+            });
             
         Route::controller(BukuController::class)
             ->prefix('buku')
