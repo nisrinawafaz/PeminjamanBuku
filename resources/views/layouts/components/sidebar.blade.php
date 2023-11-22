@@ -39,6 +39,24 @@ $links = [
                 "section_href" => route('buku.add')
             ]
         ]
+    ],
+
+    [
+        "text" => "Kelola Penerbit",
+        "icon" => "fas fa-users",
+        "is_multi" => true,
+        "href" => [
+            [
+                "section_text" => "Data Penerbit",
+                "section_icon" => "far fa-circle",
+                "section_href" => route('penerbit.tabel')
+            ],
+            [
+                "section_text" => "Tambah Penerbit",
+                "section_icon" => "far fa-circle",
+                "section_href" => route('penerbit.add')
+            ]
+        ]
     ]
 ];
 $navigation_links = json_decode(json_encode($links));

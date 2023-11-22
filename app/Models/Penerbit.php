@@ -17,6 +17,7 @@ class Penerbit extends Model
      *
      * @var array<int, string>
      */
+    protected $primaryKey = 'idPenerbit';
     protected $fillable = [
         'perusahaan',
         'alamat',

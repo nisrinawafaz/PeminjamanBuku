@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BukuController;
+use App\Http\Controllers\PenerbitController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,4 +56,18 @@ Route::group(['prefix' => 'dashboard/admin'], function () {
                 Route::match(['get', 'post'], '{id}/ubah', 'ubahBuku')->name('edit');
                 //Route::delete('{id}/hapus', 'hapusBuku')->name('delete');
             });
+
+        Route::controller(PenerbitController::class)
+            ->prefix('penerbit')
+            ->as('penerbit.')
+            ->group(function () {
+                Route::get('/tabelPenerbit', 'tampilpenerbit')->name('tabel');
+                Route::get('/penerbit/{id}', 'detail')->name('detail');
+            
+            // Route::post('/dataTable', 'BukuController@dataTable')->name('dataTable');
+                Route::match(['get', 'post'], '/tambahPenerbit', 'tambahPenerbit')->name('add');
+            Route::delete('{id}/buku/hapus/', 'hapusPenerbit')->name('hapus');
+                Route::match(['get', 'post'], '{id}/ubahpenerbit', 'ubahPenerbit')->name('edit');
+                //Route::delete('{id}/hapus', 'hapusBuku')->name('delete');
+        });
 });
