@@ -31,7 +31,7 @@ $links = [
             [
                 "section_text" => "Data Buku",
                 "section_icon" => "far fa-circle",
-                "section_href" => route('buku.tabel')
+                "section_href" => route('buku.index')
             ],
             [
                 "section_text" => "Tambah Buku",
@@ -43,6 +43,8 @@ $links = [
 
     [
         "text" => "Kelola Penerbit",
+    [
+        "text" => "Kelola Penulis",
         "icon" => "fas fa-users",
         "is_multi" => true,
         "href" => [
@@ -55,6 +57,14 @@ $links = [
                 "section_text" => "Tambah Penerbit",
                 "section_icon" => "far fa-circle",
                 "section_href" => route('penerbit.add')
+                "section_text" => "Data Penulis",
+                "section_icon" => "far fa-circle",
+                "section_href" => route('penulis.index')
+            ],
+            [
+                "section_text" => "Tambah Penulis",
+                "section_icon" => "far fa-circle",
+                "section_href" => route('penulis.add')
             ]
         ]
     ]

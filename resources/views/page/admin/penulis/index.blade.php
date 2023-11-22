@@ -12,14 +12,14 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Data Buku</h1>
+                <h1>Data Penulis</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item">
                         <a href="{{ route('home') }}">Beranda</a>
                     </li>
-                    <li class="breadcrumb-item active">Buku</li>
+                    <li class="breadcrumb-item active">Penulis</li>
                 </ol>
             </div>
         </div>
@@ -52,14 +52,15 @@
         </div>
         <div class="card-body p-0" style="margin: 20px">
             <table
-                id="previewBuku"
+                id="previewPenulis"
                 class="table table-striped table-bordered display"
                 style="width:100%">
                 <thead>
                     <tr>
-                        <th>Judul</th>
-                        <th>Deskripsi</th>
-                        <th>Tahun Terbit</th>
+                        <th>Nama Lengkap</th>
+                        <th>Domisili</th>
+                        <th>Tanggal Lahir</th>
+                        <th>Email</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -80,14 +81,15 @@
     src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
 <script>
     $(document).ready(function () {
-        $('#previewBuku').DataTable({
+        $('#previewPenulis').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('buku.index') }}",
+            ajax: "{{ route('penulis.index') }}",
             columns: [
-                { data: 'judul', name: 'judul' },
-                { data: 'deskripsi', name: 'deskripsi' },
-                { data: 'tahun_terbit', name: 'tahun_terbit' },
+                { data: 'nama_lengkap', name: 'nama_lengkap' },
+                { data: 'domisili', name: 'domisili' },
+                { data: 'tanggal_lahir', name: 'tanggal_lahir' },
+                { data: 'email', name: 'email' },
                 { data: 'options', name: 'options', orderable: false, searchable: false },
             ],
             language: {

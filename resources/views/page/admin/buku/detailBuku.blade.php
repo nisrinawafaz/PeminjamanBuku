@@ -15,7 +15,7 @@
                     <li class="breadcrumb-item">
                         <a href="{{ route('home') }}">Beranda</a>
                     </li>
-                    <li class="breadcrumb-item"><a href="{{ route('buku.tabel') }}">Daftar Buku</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('buku.index') }}">Daftar Buku</a></li>
                     <li class="breadcrumb-item active">Detail Buku</li>
                 </ol>
             </div>
