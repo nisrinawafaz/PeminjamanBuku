@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Penerbit;
+use Illuminate\Support\Facades\DB;
+use DataTables;
 
 class PenerbitController extends Controller
 {
@@ -45,6 +47,45 @@ class PenerbitController extends Controller
        
         $penerbit = Penerbit::all();
         return view('page.admin.penerbit.tabelPenerbit', compact('penerbit'));
+    }
+
+    public function detail($idPenerbit)
+    {
+        // Ambil data buku berdasarkan ID dari database
+        $penerbit = Penerbit::find($idPenerbit);
+
+        if (!$penerbit) {
+            
+            // Redirect atau tampilkan pesan jika buku tidak ditemukan
+            return redirect()->route('penerbit.index')->with('error', 'penerbit tidak ditemukan');
+        }
+
+        return view('page.admin.penerbit.detailPenerbit', compact('penerbit'));
+    }
+
+    public function index(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = DB::table('penerbits')->select('*');
+            return Datatables::of($data)
+                ->addColumn('options', function ($row) {
+                    $detailUrl = route('penerbit.detail', $row->idPenerbit);
+                    $editUrl = route('penerbit.edit', ['id' => $row->idPenerbit]);
+                    $deleteUrl = route('penerbit.hapus', $row->idPenerbit);
+
+                    return '<a href="' . $detailUrl . '" class="btn btn-warning"><i class="fas fa-info-circle"></i></a>
+                            <a href="' . $editUrl . '" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                            <a href="' . $deleteUrl . '" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                            <form id="delete-form-' . $row->idPenerbit . '" action="' . $deleteUrl . '" method="POST" style="display: none;">
+                                @csrf
+                                @method(\'delete\')
+                            </form>';
+                })
+                ->rawColumns(['options'])
+                ->make(true);
+        }
+
+        return view('page.admin.penerbit.tabelPenerbit');
     }
 
     public function ubahPenerbit(Request $request, $id)

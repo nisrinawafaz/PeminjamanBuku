@@ -67,7 +67,7 @@ Route::group(['prefix' => 'dashboard/admin'], function () {
             ->group(function () {
                 Route::get('/', 'index')->name('index');
                 // Route::get('/tabelBuku', 'tampilBuku')->name('tabel');
-                Route::get('/{idBuku}', 'detail')->name('detail');
+                Route::get('/{idBuku}/detail', 'detail')->name('detail');
                 Route::get('/file/{idBuku}', 'bukaBuku')->name('file');
                 // Route::post('/dataTable', 'BukuController@dataTable')->name('dataTable');
                 Route::match(['get', 'post'], '/tambahBuku', 'tambahBuku')->name('add');
