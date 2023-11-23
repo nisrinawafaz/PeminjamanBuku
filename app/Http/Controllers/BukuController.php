@@ -22,7 +22,7 @@ class BukuController extends Controller
 
         DB::enableQueryLog(); // Aktifkan query log
 
-        $genre = genre::all();
+        $genre = Genre::all();
         $penulis = Penulis::all();
         $penerbit = Penerbit::all();
         try {
@@ -44,6 +44,8 @@ class BukuController extends Controller
                     $nama_gambar = time() . '_' . $request->file('cover')->getClientOriginalName();
                     $upload = $request->cover->storeAs('public/admin/cover_buku', $nama_gambar);
                     $img = Storage::url($upload);
+                    $destinationPath = public_path('storage/admin/cover_buku');
+                    \File::copy(storage_path('app/' . $upload), $destinationPath . '/' . $nama_gambar);
                 }
 
                 $file_buku = null;
@@ -51,6 +53,8 @@ class BukuController extends Controller
                     $nama_file = time() . '_' . $request->file('file_buku')->getClientOriginalName();
                     $upload = $request->file_buku->storeAs('public/admin/file_buku', $nama_file);
                     $file_buku = Storage::url($upload);
+                    $destinationPath = public_path('storage/admin/file_buku');
+                    \File::copy(storage_path('app/' . $upload), $destinationPath . '/' . $nama_file);
                 }
                 $buku = Buku::create([
                     'idPenulis' => $request->id_penulis,
@@ -65,7 +69,6 @@ class BukuController extends Controller
                     'gambar_cover' => $img
                 ]);
 
-                dd(\DB::getQueryLog()); // Tampilkan log query
                 return redirect()
                     ->route('buku.index')
                     ->with([
@@ -96,10 +99,10 @@ class BukuController extends Controller
 
                     return '<a href="' . $detailUrl . '" class="btn btn-warning"><i class="fas fa-info-circle"></i></a>
                             <a href="' . $editUrl . '" class="btn btn-primary"><i class="fas fa-edit"></i></a>
-                            <a href="' . $deleteUrl . '" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                            <form id="delete-form-' . $row->idBuku . '" action="' . $deleteUrl . '" method="POST" style="display: none;">
-                                @csrf
-                                @method(\'delete\')
+                            <form action="' . $deleteUrl . '" method="POST" style="display:inline;">
+                                ' . csrf_field() . '
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i></button>
                             </form>';
                 })
                 ->rawColumns(['options'])
@@ -138,7 +141,7 @@ class BukuController extends Controller
                     'cover' => 'image|mimes:jpg,png,jpeg,gif,svg|max:1024',
                 ]);
 
-                $img = $buku->gambar_cover; 
+                $img = $buku->gambar_cover;
                 if ($request->file('cover')) {
                     if ($img && Storage::exists($img)) {
                         Storage::delete($img);
@@ -148,7 +151,7 @@ class BukuController extends Controller
                     $img = Storage::url($upload);
                 }
 
-                $file_buku = $buku->path_file; 
+                $file_buku = $buku->path_file;
                 if ($request->file('file_buku')) {
                     if ($file_buku && Storage::exists($file_buku)) {
                         Storage::delete($file_buku);
@@ -198,7 +201,7 @@ class BukuController extends Controller
         if (!$buku) {
             // Log error message
             Log::error('Buku tidak ditemukan dengan ID: ' . $idBuku);
-            
+
             // Redirect atau tampilkan pesan jika buku tidak ditemukan
             return redirect()->route('buku.index')->with('error', 'Buku tidak ditemukan');
         }
@@ -216,7 +219,7 @@ class BukuController extends Controller
         if (!$buku) {
             // Log error message
             Log::error('Buku tidak ditemukan dengan ID: ' . $idBuku);
-            
+
             // Redirect atau tampilkan pesan jika buku tidak ditemukan
             return redirect()->route('buku.index')->with('error', 'Buku tidak ditemukan');
         }
@@ -229,7 +232,7 @@ class BukuController extends Controller
     public function hapusBuku($idBuku)
     {
         $buku = Buku::findOrFail($idBuku);
-        $buku -> delete();
+        $buku->delete();
 
         return redirect()->route('buku.index')->with('success', 'Buku berhasil dihapus');
     }
