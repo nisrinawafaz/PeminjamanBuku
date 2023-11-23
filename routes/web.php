@@ -90,6 +90,7 @@ Route::group(['prefix' => 'dashboard/admin'], function () {
             ->prefix('penerbit')
             ->as('penerbit.')
             ->group(function () {
+                Route::get('/', 'index')->name('index');
                 Route::get('/tabelPenerbit', 'tampilpenerbit')->name('tabel');
                 Route::get('/penerbit/{id}', 'detail')->name('detail');
             

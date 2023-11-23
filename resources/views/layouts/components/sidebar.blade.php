@@ -43,8 +43,6 @@ $links = [
 
     [
         "text" => "Kelola Penerbit",
-    [
-        "text" => "Kelola Penulis",
         "icon" => "fas fa-users",
         "is_multi" => true,
         "href" => [
@@ -54,9 +52,21 @@ $links = [
                 "section_href" => route('penerbit.tabel')
             ],
             [
-                "section_text" => "Tambah Penerbit",
+              "section_text" => "Tambah Penerbit",
                 "section_icon" => "far fa-circle",
                 "section_href" => route('penerbit.add')
+            ]
+        ]
+    ],
+
+    [
+        "text" => "Kelola Penulis",
+        "icon" => "fas fa-users",
+        "is_multi" => true,
+        "href" => [
+            
+            [
+                
                 "section_text" => "Data Penulis",
                 "section_icon" => "far fa-circle",
                 "section_href" => route('penulis.index')
