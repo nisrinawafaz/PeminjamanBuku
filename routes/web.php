@@ -58,7 +58,7 @@ Route::group(['prefix' => 'dashboard/admin'], function () {
                 Route::post('/tambah',  'tambahPenulis');
                 Route::get('/{idPenulis}/ubah', 'ubahPenulis')->name('ubah');
                 Route::put('/{idPenulis}/ubah', 'ubahPenulis');
-                Route::delete('/{idPenulis}/hapus', 'hapusPenulis')->name('hapus');
+                Route::delete('/{idPenulis}/hapus', 'hapusPenulis')->name('delete');
             });
             
         Route::controller(BukuController::class)
