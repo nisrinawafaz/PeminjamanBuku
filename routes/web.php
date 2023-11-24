@@ -53,11 +53,10 @@ Route::group(['prefix' => 'dashboard/admin'], function () {
             ->as('penulis.')
             ->group(function () {
                 Route::get('/', 'index')->name('index');
+                Route::get('/{idPenulis}/detail', 'detail')->name('detail');
                 Route::post('/dataTable', 'dataTable')->name('dataTable');
-                Route::get('/tambah', 'tambahPenulis')->name('add');
-                Route::post('/tambah',  'tambahPenulis');
-                Route::get('/{idPenulis}/ubah', 'ubahPenulis')->name('ubah');
-                Route::put('/{idPenulis}/ubah', 'ubahPenulis');
+                Route::match(['get', 'post'], '/tambah', 'tambahPenulis')->name('add');
+                Route::match(['get', 'post'], '/{idPenulis}/ubah', 'ubahPenulis')->name('ubah');
                 Route::delete('/{idPenulis}/hapus', 'hapusPenulis')->name('delete');
             });
             
