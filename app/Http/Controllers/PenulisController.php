@@ -45,6 +45,23 @@ class PenulisController extends Controller
         return view('page.admin.penulis.index');
     }
 
+    public function detail($idPenulis)
+    {
+        // Ambil data buku berdasarkan ID dari database
+        $buku = Buku::find($idBuku);
+
+        if (!$buku) {
+            // Log error message
+            Log::error('Buku tidak ditemukan dengan ID: ' . $idBuku);
+            
+            // Redirect atau tampilkan pesan jika buku tidak ditemukan
+            return redirect()->route('buku.index')->with('error', 'Buku tidak ditemukan');
+        }
+
+        Log::info('Melihat detail buku dengan ID: ' . $idBuku); // Log info message
+
+        return view('page.admin.buku.detailBuku', compact('buku'));
+    }
     
     public function tambahPenulis(Request $request)
     {
@@ -78,10 +95,15 @@ class PenulisController extends Controller
                 'nama_lengkap' => 'required|string|max:255',
                 'domisili' => 'required|string|max:255',
                 'tanggal_lahir' => 'required|date',
-                'email' => 'required|string|email|unique:penulis,email,' . $penulis->idPenulis,
+                'email' => 'required|string|email',
             ]);
 
-            $penulis->update($request->all());
+            $penulis->update([
+                'nama_lengkap' => $request->nama_lengkap,
+                'domisili' => $request->domisili,
+                'tanggal_lahir' => $request->tanggal_lahir,
+                'email' => $request->email,
+            ]);
 
             return redirect()->route('penulis.index')->with('status', 'Data penulis berhasil diubah');
         }
