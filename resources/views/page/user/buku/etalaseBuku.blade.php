@@ -70,6 +70,12 @@
             text-decoration: underline;
         }
 
+        .button-action a:visited{
+            color: green;
+            background-color: transparent;
+            text-decoration: none;
+        }
+
         .flex-card {
             display: flex;
             flex-direction: column;
@@ -90,7 +96,7 @@
                     <a class="nav-link" href="#">Profile</a>
                 </li>
             </ul>
-            <a class="navbar-brand" href="#">KOLEKSI KATA</a>
+            <a class="navbar-brand" href="#">KOLEKSI KATA</a><!--{{Auth::user()->email}}-->
             <ul class="nav">
                 <li class="nav-item">
                     <a class="nav-link" href="#">Favorite</a>
@@ -126,12 +132,13 @@
                     width="300px" style="display: block;" />
                 @endif
 
-                <h4 class="text-title" id="nama-${menu.num}">'{{ $item->judul }}'</h4>
+                <h4 class="text-title" id="judul">'{{ $item->judul }}'</h4>
                 <p class="card-text">{{ $item->genre->nama_genre }}</p>
                 <p class="card-text">{{$item->harga_harian }}</p>
             </div>
-            <div>
-                <button type="button" class="btn btn-success" id="${menu.num}" onclick='tambahOrder(this)'>Sewa</button>
+            <div class="button-action">
+            <a href="{{ route('sewa.detail', ['id' => $item->idBuku]) }}" class="btn btn-success">Sewa</a>
+            <a href="{{ route('etalaseBuku.detail', ['idBuku' => $item->idBuku]) }}" class="btn btn-success">Detail</a>
             </div>
         </div>
         @endforeach
