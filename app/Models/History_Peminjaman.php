@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class History_Peminjaman extends Model
 {
     use HasFactory;
+
+    protected $table = 'history_peminjaman';
     public function buku()
     {
         return $this->belongsTo(Buku::class);
@@ -22,6 +24,7 @@ class History_Peminjaman extends Model
      *
      * @var array<int, string>
      */
+    protected $primaryKey = 'idPeminjaman';
     protected $fillable = [
         'idUser',
         'idBuku',
