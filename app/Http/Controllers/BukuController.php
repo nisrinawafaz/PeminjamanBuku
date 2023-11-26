@@ -17,6 +17,11 @@ use DataTables;
 
 class BukuController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function tambahBuku(Request $request)
     {
 
@@ -117,6 +122,24 @@ class BukuController extends Controller
         Log::info('Menampilkan daftar buku ke user'); // Log info message
         $buku = Buku::all();
         return view('page.user.buku.etalaseBuku', compact('buku'));
+    }
+
+    public function etalaseDetail($idBuku)
+    {
+        // Ambil data buku berdasarkan ID dari database
+        $buku = Buku::find($idBuku);
+
+        if (!$buku) {
+            // Log error message
+            Log::error('Buku tidak ditemukan dengan ID: ' . $idBuku);
+
+            // Redirect atau tampilkan pesan jika buku tidak ditemukan
+            return redirect()->route('buku.index')->with('error', 'Buku tidak ditemukan');
+        }
+
+        Log::info('Melihat detail buku dengan ID: ' . $idBuku); // Log info message
+
+        return view('page.user.buku.detailBuku', compact('buku'));
     }
 
     public function UbahBuku(Request $request, $idBuku)
