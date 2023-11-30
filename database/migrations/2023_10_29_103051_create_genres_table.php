@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('genres', function (Blueprint $table) {
-            $table->id('idGenre');
+            $table->bigIncrements('idGenre'); // Use bigIncrements for auto-incrementing big integer
             $table->string('nama_genre');
             $table->timestamps();
         });

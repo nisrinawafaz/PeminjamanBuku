@@ -42,6 +42,24 @@ $links = [
     ],
 
     [
+        "text" => "Kelola Genre",
+        "icon" => "fas fa-users",
+        "is_multi" => true,
+        "href" => [
+            [
+                "section_text" => "Data Genre",
+                "section_icon" => "far fa-circle",
+                "section_href" => route('genre.tabel')
+            ],
+            [
+              "section_text" => "Tambah Genre",
+                "section_icon" => "far fa-circle",
+                "section_href" => route('genre.add')
+            ]
+        ]
+    ],
+
+    [
         "text" => "Kelola Penerbit",
         "icon" => "fas fa-users",
         "is_multi" => true,
@@ -64,9 +82,9 @@ $links = [
         "icon" => "fas fa-users",
         "is_multi" => true,
         "href" => [
-            
+
             [
-                
+
                 "section_text" => "Data Penulis",
                 "section_icon" => "far fa-circle",
                 "section_href" => route('penulis.index')
