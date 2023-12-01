@@ -10,14 +10,7 @@ class History_Peminjaman extends Model
     use HasFactory;
 
     protected $table = 'history_peminjaman';
-    public function buku()
-    {
-        return $this->belongsTo(Buku::class);
-    }
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    
 
     /**
      * The attributes that are mass assignable.
@@ -32,4 +25,14 @@ class History_Peminjaman extends Model
         'tgl_pengembalian',
         'total_pembayaran',
     ];
+
+    public function buku()
+    {
+        return $this->belongsTo(Buku::class, 'idBuku');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'idUser');
+    }
 }

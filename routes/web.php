@@ -8,7 +8,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\PenerbitController;
 use App\Http\Controllers\PenulisController;
+use App\Http\Controllers\HistoryPeminjamanController;
 use App\Http\Controllers\SewaControllerController;
+use App\Http\Controllers\FavoriteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +45,9 @@ Route::controller(SewaController::class)
         Route::get('/', 'etalaseBuku')->name('etalaseBuku');
         Route::get('/{idBuku}/detail', 'etalaseDetail')->name('detail');
     });
+
+Route::resource('favorite', FavoriteController::class)->only(['index', 'store']);
+
 
 Route::group(['prefix' => 'dashboard/admin'], function () {
 
@@ -113,6 +118,22 @@ Route::group(['prefix' => 'dashboard/admin'], function () {
             Route::match(['get', 'post'], '/tambahPenerbit', 'tambahPenerbit')->name('add');
             Route::delete('{id}/buku/hapus/', 'hapusPenerbit')->name('hapus');
             Route::match(['get', 'post'], '{id}/ubahpenerbit', 'ubahPenerbit')->name('edit');
+            //Route::delete('{id}/hapus', 'hapusBuku')->name('delete');
+        });
+
+    Route::controller(HistoryPeminjamanController::class)
+        ->prefix('peminjaman')
+        ->as('peminjaman.')
+        ->group(function () {
+            //Route::get('/', 'index')->name('index');
+            Route::get('/tabelPeminjaman', 'tampilPeminjaman')->name('tabel');
+            // Route::get('/penerbit/{id}', 'detail')->name('detail');
+            Route::get('/export', 'export')->name('export');
+            Route::post('/import', 'import')->name('import');
+            // Route::post('/dataTable', 'BukuController@dataTable')->name('dataTable');
+            // Route::match(['get', 'post'], '/tambahPenerbit', 'tambahPenerbit')->name('add');
+            // Route::delete('{id}/buku/hapus/', 'hapusPenerbit')->name('hapus');
+            // Route::match(['get', 'post'], '{id}/ubahpenerbit', 'ubahPenerbit')->name('edit');
             //Route::delete('{id}/hapus', 'hapusBuku')->name('delete');
         });
 });

@@ -77,7 +77,22 @@ $links = [
                 "section_href" => route('penulis.add')
             ]
         ]
+    ],
+    [
+        "text" => "Peminjaman",
+        "icon" => "fas fa-users",
+        "is_multi" => true,
+        "href" => [
+            
+            [
+                
+                "section_text" => "Logs Peminjaman",
+                "section_icon" => "far fa-circle",
+                "section_href" => route('peminjaman.tabel')
+            ]
+        ]
     ]
+
 ];
 $navigation_links = json_decode(json_encode($links));
 @endphp
