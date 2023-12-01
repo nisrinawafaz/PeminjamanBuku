@@ -49,7 +49,7 @@ $links = [
             [
                 "section_text" => "Data Genre",
                 "section_icon" => "far fa-circle",
-                "section_href" => route('genre.tabel')
+                "section_href" => route('genre.index')
             ],
             [
               "section_text" => "Tambah Genre",

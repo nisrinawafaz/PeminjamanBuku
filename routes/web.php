@@ -97,10 +97,11 @@ Route::group(['prefix' => 'dashboard/admin'], function () {
         ->as('genre.')
         ->group(function () {
             // The 'genre.' prefix is automatically added to the route names
-            Route::get('/table', 'tabel')->name('tabel');
+            Route::get('/', 'index')->name('index');
+            Route::get('/{idGenre}/detail', 'detail')->name('detail');
             Route::match(['get', 'post'], '/add', 'tambahGenre')->name('add');
             Route::match(['get', 'post'], '/{id}/edit', 'ubahGenre')->name('edit');
-            Route::delete('/{id}/hapus', 'hapusGenre')->name('delete');
+            Route::delete('/{idGenre}/hapus', 'hapusGenre')->name('hapus');
         });
 
     Route::controller(PenerbitController::class)

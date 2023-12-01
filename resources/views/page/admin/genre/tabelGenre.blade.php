@@ -83,7 +83,7 @@
         $('#previewGenre').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('genre.tabel') }}", // Update this line
+            ajax: "{{ route('genre.index') }}", // Update this line
             columns: [
                 { data: 'idGenre', name: 'idGenre' },
                 { data: 'nama_genre', name: 'nama_genre' },

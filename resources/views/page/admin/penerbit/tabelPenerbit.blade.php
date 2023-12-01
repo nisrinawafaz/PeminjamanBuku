@@ -29,7 +29,7 @@
 </section>
 
 <!-- Main content -->
-<section class="content">
+<section class="content">ddf
 
     <!-- Default box -->
     <div class="card">
@@ -109,7 +109,7 @@
                     "last": "Terakhir",
                     "next": "Selanjutnya",
                     "previous": "Sebelumnya"
-                }, 
+                },
                 aria: {
                     "sortAscending": ": aktifkan untuk mengurutkan kolom ascending",
                     "sortDescending": ": aktifkan untuk mengurutkan kolom descending"

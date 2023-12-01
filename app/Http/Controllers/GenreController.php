@@ -60,9 +60,10 @@ class GenreController extends Controller
                     return '<a href="' . $detailUrl . '" class="btn btn-warning"><i class="fas fa-info-circle"></i></a>
                             <a href="' . $editUrl . '" class="btn btn-primary"><i class="fas fa-edit"></i></a>
                             <a href="' . $deleteUrl . '" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                            <form id="delete-form-' . $row->idGenre . '" action="' . $deleteUrl . '" method="POST" style="display: none;">
-                                @csrf
-                                @method(\'delete\')
+                            <form action="' . $deleteUrl . '" method="POST" style="display:inline;">
+                                ' . csrf_field() . '
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i></button>
                             </form>';
                 })
                 ->rawColumns(['options'])
@@ -78,10 +79,12 @@ class GenreController extends Controller
 
         if ($request->isMethod('post')) {
             $this->validate($request, [
-                'nama_genre' => 'required|unique:genres,nama_genre,' . $id,
+                'idGenre' => 'required',
+                'nama_genre' => 'required|unique:genres',
             ]);
 
             $genre->update([
+                'idGenre' => $request->idGenre,
                 'nama_genre' => $request->nama_genre,
             ]);
 
@@ -113,6 +116,6 @@ class GenreController extends Controller
         $genre = Genre::findOrFail($id);
         $genre->delete();
 
-        return redirect()->route('genre.tabel')->with('success', 'Genre berhasil dihapus');
+        return redirect()->route('genre.index')->with('success', 'Genre berhasil dihapus');
     }
 }
