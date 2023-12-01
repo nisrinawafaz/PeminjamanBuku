@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BukuController;
+use App\Http\Controllers\GenreController;
 use App\Http\Controllers\PenerbitController;
 use App\Http\Controllers\PenulisController;
 use App\Http\Controllers\HistoryPeminjamanController;
@@ -96,14 +97,16 @@ Route::group(['prefix' => 'dashboard/admin'], function () {
             //Route::delete('{idBuku}/hapus', 'hapusBuku')->name('delete');
         });
 
-    Route::controller(GenreController::class)
+    Route::controller(GenreController::class, 'genre')
         ->prefix('genre')
         ->as('genre.')
         ->group(function () {
+            // The 'genre.' prefix is automatically added to the route names
             Route::get('/', 'index')->name('index');
-            Route::match(['get', 'post'], 'tambah', 'tambahGenre')->name('add');
-            Route::match(['get', 'post'], '{id}/ubah', 'ubahGenre')->name('edit');
-            Route::delete('{id}/hapus', 'hapusGenre')->name('delete');
+            Route::get('/{idGenre}/detail', 'detail')->name('detail');
+            Route::match(['get', 'post'], '/add', 'tambahGenre')->name('add');
+            Route::match(['get', 'post'], '/{id}/edit', 'ubahGenre')->name('edit');
+            Route::delete('/{idGenre}/hapus', 'hapusGenre')->name('hapus');
         });
 
     Route::controller(PenerbitController::class)

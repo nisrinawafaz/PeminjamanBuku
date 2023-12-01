@@ -18,6 +18,7 @@ class Genre extends Model
      *
      * @var array<int, string>
      */
+    protected $primaryKey = 'idGenre';
     protected $fillable = [
         'nama_genre'
     ];
