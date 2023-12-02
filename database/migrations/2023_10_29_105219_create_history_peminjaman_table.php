@@ -20,6 +20,8 @@ return new class extends Migration
             $table->date('tgl_peminjaman');
             $table->date('tgl_pengembalian');
             $table->integer('total_pembayaran');
+            $table->string('status');
+            $table->enum('bank', ['BRI', 'BCA', 'MANDIRI', 'BSI']);
             $table->timestamps();
 
             $table->foreign('idBuku')->references('idBuku')->on('bukus')->onDelete('cascade');
