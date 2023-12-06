@@ -31,7 +31,7 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('/etalaseBuku', [BukuController::class, 'etalaseBuku'])->name('etalaseBuku');
 
-Route::controller(SewaController::class)
+Route::controller(HistoryPeminjamanController::class)
     ->prefix('sewa')
     ->as('sewa.')
     ->group(function () {
