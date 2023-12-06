@@ -76,6 +76,12 @@
             text-decoration: none;
         }
 
+        .button-green{
+            color: white;
+            background-color: #198754;
+            text-decoration: none;
+        }
+
         .flex-card {
             display: flex;
             flex-direction: column;
@@ -136,9 +142,12 @@
                 <p class="card-text">{{ $item->genre->nama_genre }}</p>
                 <p class="card-text">{{$item->harga_harian }}</p>
             </div>
-            <div class="button-action">
-            <a href="{{ route('sewa.detail', ['id' => $item->idBuku]) }}" class="btn btn-success">Sewa</a>
-            <a href="{{ route('etalaseBuku.detail', ['idBuku' => $item->idBuku]) }}" class="btn btn-success">Detail</a>
+            <div class="">
+            <a href="{{ route('sewa.detail', ['id' => $item->idBuku]) }}" class="btn btn-success" >Sewa</a>
+            <button href="{{ route('etalaseBuku.detail', ['idBuku' => $item->idBuku]) }}"  class="button-green btn" ><i class="fa-regular fa-heart"></i></button>
+            <button onclick="window.location.href='{{ route('etalaseBuku.detail', ['idBuku' => $item->idBuku]) }}'" class="button-green btn">
+  <i class="fa-solid fa-circle-info"></i>
+</button>
             </div>
         </div>
         @endforeach
