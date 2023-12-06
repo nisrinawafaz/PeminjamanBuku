@@ -12,6 +12,11 @@ use DataTables;
 
 class HistoryPeminjamanController extends Controller
 {
+    
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     public function tampilPeminjaman()
     {
@@ -63,5 +68,48 @@ class HistoryPeminjamanController extends Controller
         }
 
         return view('page.admin.historypeminjaman.tabelPeminjaman');
+    }
+
+
+    public function show($id)
+    {
+        // Ambil data buku berdasarkan ID
+        $buku = Buku::find($id);
+
+        // Kirim data buku ke view
+        return view('page.user.peminjaman.crudSewa', compact('buku'));
+    }
+
+    public function tambahPeminjaman(Request $request)
+    {
+        try {
+            \Log::info($request->all());
+            $peminjaman = History_Peminjaman::create([
+                'idPeminjaman' => 1,
+                'idBuku' => $request->idBuku,
+                'idUser' => $request->idUser,
+                'tgl_peminjaman' => now(),
+                'tgl_pengembalian' => now()->addDays($request->lamaSewa),
+                'total_pembayaran' => $request->hargaBuku *$request->lamaSewa,
+                'status' => 'belum dikembalikan',
+                'bank' => $request->bank,
+            ]);
+            $buku = Buku::findOrFail($request->idBuku);
+            $buku->update([
+                'stok' => $buku->stok - 1,
+            ]);
+
+            return redirect()
+                ->route('etalaseBuku.etalasebuku')
+                ->with([
+                    'success' => 'New post has been created successfully'
+                ]);
+        } catch (\Throwable $th) {
+            \Log::error($th);
+            $error = $th->getMessage();
+            return redirect()->route('etalaseBuku.etalaseBuku')
+                ->with('error', $error);
+        }
+
     }
 }
