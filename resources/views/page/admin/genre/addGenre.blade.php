@@ -48,27 +48,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-sm">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="form-group">
-                                    <label for="inputIdGenre">ID Genre</label>
-                                    <input
-                                    type="text"
-                                    id="inputIdGenre"
-                                    name="idGenre"
-                                    class="form-control @error('idGenre') is-invalid @enderror"
-                                    placeholder="Masukkan ID Genre"
-                                    value="{{ old('idGenre') }}"
-                                    required="required"
-                                    autocomplete="idGenre">
-                                    @error('idGenre')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
+
                         <div class="form-group">
                             <label for="inputNamaGenre">Nama Genre</label>
                             <input

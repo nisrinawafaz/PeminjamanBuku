@@ -21,7 +21,7 @@ class GenreController extends Controller
             ]);
 
             return redirect()
-                ->route('genre.tabel')
+                ->route('genre.index')
                 ->with([
                     'success' => 'Genre berhasil ditambahkan'
                 ]);
@@ -59,12 +59,12 @@ class GenreController extends Controller
 
                     return '<a href="' . $detailUrl . '" class="btn btn-warning"><i class="fas fa-info-circle"></i></a>
                             <a href="' . $editUrl . '" class="btn btn-primary"><i class="fas fa-edit"></i></a>
-                            <a href="' . $deleteUrl . '" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                             <form action="' . $deleteUrl . '" method="POST" style="display:inline;">
                                 ' . csrf_field() . '
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i></button>
-                            </form>';
+                            </form>'
+                            ;
                 })
                 ->rawColumns(['options'])
                 ->make(true);
