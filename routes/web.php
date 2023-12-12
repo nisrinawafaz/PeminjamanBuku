@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\AkunController;
-use App\Http\Controllers\SewaController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -10,7 +9,6 @@ use App\Http\Controllers\GenreController;
 use App\Http\Controllers\PenerbitController;
 use App\Http\Controllers\PenulisController;
 use App\Http\Controllers\HistoryPeminjamanController;
-use App\Http\Controllers\SewaControllerController;
 use App\Http\Controllers\FavoriteController;
 
 /*
@@ -31,12 +29,14 @@ Route::get('/', function () {
 Auth::routes();
 
 
-Route::controller(SewaController::class)
-    ->prefix('sewa')
+Route::controller(HistoryPeminjamanController::class)
+    ->prefix('peminjaman')
     ->as('sewa.')
     ->group(function () {
-        Route::get('/{id}', 'show')->name('detail');
+        Route::get('/{id}', 'addToCart')->name('cart');
         Route::post('/checkout', 'tambahPeminjaman')->name('add');
+        Route::get('/mybook/{id}', 'lihatPeminjaman')->name('show');
+        Route::get('/mybook/{id}/detail', 'detailPeminjaman')->name('detail');
     });
 
 Route::controller(BukuController::class)

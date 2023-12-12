@@ -120,7 +120,7 @@ class BukuController extends Controller
     public function etalaseBuku()
     {
         Log::info('Menampilkan daftar buku ke user'); // Log info message
-        $buku = Buku::all();
+        $buku = Buku::where('stok', '>', 0)->get();
         return view('page.user.buku.etalaseBuku', compact('buku'));
     }
 

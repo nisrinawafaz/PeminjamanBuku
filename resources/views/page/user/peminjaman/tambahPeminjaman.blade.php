@@ -86,6 +86,22 @@
                                     </span>
                                     @enderror
                                 </div>
+                                <div class="form-group">
+                                    <label for="inputBank">Bank</label>
+                                    <select id="inputBank" name="bank"
+                                        class="form-control @error('bank') is-invalid @enderror" required="required">
+                                        <option value="" disabled selected>-- Pilih Bank --</option>
+                                        <option value="BRI" {{ old('bank')=='BRI' ? 'selected' : '' }}>BRI</option>
+                                        <option value="BCA" {{ old('bank')=='BCA' ? 'selected' : '' }}>BCA</option>
+                                        <option value="MANDIRI" {{ old('bank')=='MANDIRI' ? 'selected' : '' }}>MANDIRI</option>
+                                        <option value="BSI" {{ old('bank')=='BSI' ? 'selected' : '' }}>BSI</option>
+                                    </select>
+                                    @error('bank')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -116,17 +132,17 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
                     <!-- Tombol untuk melakukan checkout -->
                     <button type="button" id="checkout" class="btn btn-success">Ya, Checkout</button>
-                    
+
                 </div>
             </div>
         </div>
     </div>
     <script>
-    document.getElementById('checkout').addEventListener('click', function () {
-        // Kirim formulir ketika tombol "Ya" diklik
-        document.forms["formCheckout"].submit();
-    });
-</script>
+        document.getElementById('checkout').addEventListener('click', function () {
+            // Kirim formulir ketika tombol "Ya" diklik
+            document.forms["formCheckout"].submit();
+        });
+    </script>
 </body>
 
 </html>

@@ -24,6 +24,8 @@ class History_Peminjaman extends Model
         'tgl_peminjaman',
         'tgl_pengembalian',
         'total_pembayaran',
+        'status',
+        'bank'
     ];
 
     public function buku()
