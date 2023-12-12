@@ -108,7 +108,7 @@
                     <a class="nav-link" href="#">Favorite</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">My Book</a>
+                <a class="nav-link" href="{{ route('sewa.show', ['id' => Auth::user()->id]) }}">My Book</a>
                 </li>
             </ul>
         </div>
@@ -143,7 +143,7 @@
                 <p class="card-text">{{$item->harga_harian }}</p>
             </div>
             <div class="">
-            <a href="{{ route('sewa.detail', ['id' => $item->idBuku]) }}" class="btn btn-success" >Sewa</a>
+            <a href="{{ route('sewa.cart', ['id' => $item->idBuku]) }}" class="btn btn-success" >Sewa</a>
             <button href="{{ route('etalaseBuku.detail', ['idBuku' => $item->idBuku]) }}"  class="button-green btn" ><i class="fa-regular fa-heart"></i></button>
             <button onclick="window.location.href='{{ route('etalaseBuku.detail', ['idBuku' => $item->idBuku]) }}'" class="button-green btn">
   <i class="fa-solid fa-circle-info"></i>

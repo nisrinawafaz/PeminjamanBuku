@@ -71,13 +71,13 @@ class HistoryPeminjamanController extends Controller
     }
 
 
-    public function show($id)
+    public function addToCart($id)
     {
         // Ambil data buku berdasarkan ID
         $buku = Buku::find($id);
 
         // Kirim data buku ke view
-        return view('page.user.peminjaman.crudSewa', compact('buku'));
+        return view('page.user.peminjaman.tambahPeminjaman', compact('buku'));
     }
 
     public function tambahPeminjaman(Request $request)
@@ -111,5 +111,17 @@ class HistoryPeminjamanController extends Controller
                 ->with('error', $error);
         }
 
+    }
+
+    public function lihatPeminjaman($id)
+    {
+        $peminjaman = History_Peminjaman::where('idUser', $id)->get();
+        return view('page.user.peminjaman.lihatPeminjaman', compact('peminjaman'));
+    }
+
+    public function detailPeminjaman($id)
+    {
+        $peminjaman = History_Peminjaman::find($id);
+        return view('page.user.peminjaman.detailPeminjaman', compact('peminjaman'));
     }
 }
