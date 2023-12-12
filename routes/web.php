@@ -29,7 +29,7 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-Route::get('/etalaseBuku', [BukuController::class, 'etalaseBuku'])->name('etalaseBuku');
+
 
 Route::controller(SewaController::class)
     ->prefix('sewa')
@@ -39,7 +39,7 @@ Route::controller(SewaController::class)
         Route::post('/checkout', 'tambahPeminjaman')->name('add');
     });
 
-    Route::controller(BukuController::class)
+Route::controller(BukuController::class)
     ->prefix('etalaseBuku')
     ->as('etalaseBuku.')
     ->group(function () {
@@ -48,12 +48,13 @@ Route::controller(SewaController::class)
     });
 
 Route::resource('favorite', FavoriteController::class)->only(['index', 'store']);
+Route::middleware('auth')->post('/favorite/add', [FavoriteController::class, 'addFavorite'])->name('favorite.add');
 
+Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
 
-Route::group(['prefix' => 'dashboard/admin'], function () {
+Route::group(['prefix' => 'dashboard/admin','middleware'=>'check_roles'], function () {
 
     Route::get('/', [HomeController::class, 'index'])->name('home');
-
     Route::group(['prefix' => 'profile'], function () {
         Route::get('/', [HomeController::class, 'profile'])->name('profile');
         Route::post('update', [HomeController::class, 'updateprofile'])->name('profile.update');
@@ -139,4 +140,9 @@ Route::group(['prefix' => 'dashboard/admin'], function () {
             // Route::match(['get', 'post'], '{id}/ubahpenerbit', 'ubahPenerbit')->name('edit');
             //Route::delete('{id}/hapus', 'hapusBuku')->name('delete');
         });
+
+    Route::get('/etalaseBuku', [BukuController::class, 'etalaseBuku'])->name('etalaseBuku');        
+
 });
+
+

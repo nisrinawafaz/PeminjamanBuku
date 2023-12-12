@@ -11,11 +11,11 @@ class Favorite extends Model
 
     public function buku()
     {
-        return $this->belongsTo(Buku::class);
+        return $this->belongsTo(Buku::class, 'idBuku');
     }
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'idUser');
     }
     /**
      * The attributes that are mass assignable.

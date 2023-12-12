@@ -11,8 +11,8 @@ class PenerbitController extends Controller
 {
     public function tambahPenerbit(Request $request)
     {
-
-        
+        DB::enableQueryLog();
+        try{
         if ($request->isMethod('post')) {
             $this->validate($request, [
                 'perusahaan' => 'required',
@@ -36,6 +36,13 @@ class PenerbitController extends Controller
                     'success' => 'New post has been created successfully'
                 ]);
         }
+        } catch (\Throwable $th) {
+            \Log::error($th);
+            $error = $th->getMessage();
+            return redirect()->route('penerbit.add')
+                ->with('error', $error);
+        }
+
         
         return view('page.admin.penerbit.addPenerbit');
     
@@ -90,7 +97,7 @@ class PenerbitController extends Controller
 
     public function ubahPenerbit(Request $request, $id)
     {
-
+        try{
         $penerbit = Penerbit::findOrFail($id);
         if ($request->isMethod('post')) {
             $this->validate($request, [
@@ -115,6 +122,12 @@ class PenerbitController extends Controller
             //         'success' => 'New post has been created successfully'
             //     ]);
             return view('page.admin.penerbit.tabelPenerbit', compact('penerbit'));
+        }
+        } catch (\Throwable $th) {
+            Log::error($th);
+            $error = $th->getMessage();
+            return redirect()->route('penerbit.edit', ['id' => $idPenerbit])
+                ->with('error', $error);
         }
         
         return view('page.admin.penerbit.ubahPenerbit',['penerbit'=>$penerbit]);

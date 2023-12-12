@@ -96,10 +96,10 @@
                     <a class="nav-link" href="#">Profile</a>
                 </li>
             </ul>
-            <a class="navbar-brand" href="#">KOLEKSI KATA</a><!--{{Auth::user()->email}}-->
+            <a class="navbar-brand" href="#">Favorite</a><!--{{Auth::user()->email}}-->
             <ul class="nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('favorites.index')}}">Favorite</a>
+                    <a class="nav-link" href="#">Favorite</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">My Book</a>
@@ -128,39 +128,39 @@
         </span>
     </div>
     <img class="elevation-3 mx-auto" style="width:100%" id="prevImg"
-                            src='{{ asset('storage/admin/image/book.png') }}' style="display: block;" />
+        src='{{ asset('storage/admin/image/book.png') }}' style="display: block;" />
     <div class="grid-container">
-        @if ($buku->isEmpty())
-        <p>Tidak ada buku yang tersedia.</p>
+        
+        @if($userFavorites->isEmpty())
+        <p>Anda belum memiliki buku favorit.</p>
         @else
-        @foreach($buku as $item)
-        <div id="{{ $item->idBuku }}" class="card">
-            <div>
-                @if ($item->gambar_cover)
-                <img class="elevation-3 mx-auto" style="width:200px" id="prevImg" src='{{ asset($item->gambar_cover) }}'
-                    style="display: block;" />
+        <div class="grid-container">
+            @foreach($userFavorites as $favorite)
+                <div id="{{ $favorite->idFavorite }}" class="card">
+                    <div>
+                        @if ($favorite->buku->gambar_cover)
+                            <img class="elevation-3 mx-auto" style="width:200px" id="prevImg" src='{{ asset($favorite->buku->gambar_cover) }}' style="display: block;" />
+                        @else
+                            <img class="elevation-3 mx-auto" id="prevImg" src="{{ asset('storage/admin/cover_buku/boxed-bg.jpg') }}" width="300px" style="display: block;" />
+                        @endif
 
-                @else
-                <img class="elevation-3 mx-auto" id="prevImg" src="{{ asset('storage/admin/cover_buku/boxed-bg.jpg') }}"
-                    width="300px" style="display: block;" />
-                @endif
-
-                <h4 class="text-title" id="judul">'{{ $item->judul }}'</h4>
-                <p class="card-text">{{ $item->genre->nama_genre }}</p>
-                <p class="card-text">{{$item->harga_harian }}</p>
-            </div>
-            <div class="button-action">
-            <a href="{{ route('sewa.detail', ['id' => $item->idBuku]) }}" class="btn btn-success">Sewa</a>
-            <a href="{{ route('etalaseBuku.detail', ['idBuku' => $item->idBuku]) }}" class="btn btn-success">Detail</a>
-            <form action="{{ route('favorite.add') }}" method="post">
-                @csrf
-                <!-- Isi formulir lainnya -->
-                <button type="submit">Tambah ke Favorit</button>
-            </form>
-            </div>
+                        <h4 class="text-title" id="judul">'{{ $favorite->buku->judul }}'</h4>
+                        <p class="card-text">{{ $favorite->buku->genre->nama_genre }}</p>
+                        <p class="card-text">{{ $favorite->buku->harga_harian }}</p>
+                    </div>
+                    <div class="button-action">
+                        <a href="{{ route('sewa.detail', ['id' => $favorite->buku->idBuku]) }}" class="btn btn-success">Sewa</a>
+                        <a href="{{ route('etalaseBuku.detail', ['idBuku' => $favorite->buku->idBuku]) }}" class="btn btn-success">Detail</a>
+                        <form action="{{ route('favorite.remove', $favorite->idFavorite) }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit">Hapus dari Favorit</button>
+                        </form>
+                    </div>
+                </div>
+            @endforeach
         </div>
-        @endforeach
-        @endif
+    @endif
     </div>
 </body>
 
