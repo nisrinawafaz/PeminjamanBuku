@@ -48,19 +48,19 @@ class PenulisController extends Controller
     public function detail($idPenulis)
     {
         // Ambil data buku berdasarkan ID dari database
-        $buku = Buku::find($idBuku);
+        $penulis = Penulis::find($idPenulis);
 
-        if (!$buku) {
+        if (!$penulis) {
             // Log error message
-            Log::error('Buku tidak ditemukan dengan ID: ' . $idBuku);
+            Log::error('Penulis tidak ditemukan dengan ID: ' . $idPenulis);
             
-            // Redirect atau tampilkan pesan jika buku tidak ditemukan
-            return redirect()->route('buku.index')->with('error', 'Buku tidak ditemukan');
+            // Redirect atau tampilkan pesan jika penulis tidak ditemukan
+            return redirect()->route('penulis.index')->with('error', 'Penulis tidak ditemukan');
         }
 
-        Log::info('Melihat detail buku dengan ID: ' . $idBuku); // Log info message
+        Log::info('Melihat detail penulis dengan ID: ' . $idPenulis); // Log info message
 
-        return view('page.admin.buku.detailBuku', compact('buku'));
+        return view('page.admin.penulis.detailPenulis', compact('penulis'));
     }
     
     public function tambahPenulis(Request $request)
