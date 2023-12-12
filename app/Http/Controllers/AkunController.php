@@ -113,13 +113,17 @@ class AkunController extends Controller
                 'password' => Hash::make($request->password),
                 'user_image' => $img
             ]);
+            $logger = new Logger();
+            $logger->info('Tambah Akun berhasil');
             return redirect()->route('akun.add')->with('status', 'Data telah tersimpan di database');
+            
         }
         return view('page.admin.akun.addAkun');
     }
 
     public function ubahAkun($id, Request $request)
     {
+        $logger = new Logger();
         $usr = User::findOrFail($id);
         if ($request->isMethod('post')) {
 
@@ -146,6 +150,7 @@ class AkunController extends Controller
                 'password' => Hash::make($request->password),
                 'user_image' => $img
             ]);
+            $logger->info('Ubah akun berhasil');
             return redirect()->route('akun.edit',['id' => $usr->id ])->with('status', 'Data telah tersimpan di database');
         }
         return view('page.admin.akun.ubahAkun', [
