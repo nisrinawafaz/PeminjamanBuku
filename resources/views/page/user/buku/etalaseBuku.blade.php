@@ -70,12 +70,6 @@
             text-decoration: underline;
         }
 
-        .button-action a:visited{
-            color: green;
-            background-color: transparent;
-            text-decoration: none;
-        }
-
         .button-green{
             color: white;
             background-color: #198754;
@@ -94,25 +88,25 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-white fixed-top navbar-scroll">
         <div class="container">
-            <ul class="nav">
+            <!--<ul class="nav">
                 <li class="nav-item">
                     <a class="nav-link" href="#">Catalog</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Profile</a>
                 </li>
-            </ul>
+            </ul>-->
             <a class="navbar-brand" href="#">KOLEKSI KATA</a><!--{{Auth::user()->email}}-->
             <ul class="nav">
-                <li class="nav-item">
+                <!--<li class="nav-item">
                     <a class="nav-link" href="{{route('favorites.index')}}">Favorite</a>
-                </li>
+                </li>-->
                 <li class="nav-item">
                 <a class="nav-link" href="{{ route('sewa.show', ['id' => Auth::user()->id]) }}">My Book</a>
                 </li>
-                <li>
+                <li class="nav-item">
                     
-                    <a  href="{{ route('logout') }}"
+                    <a  class="nav-link" href="{{ route('logout') }}"
                         onclick="event.preventDefault();
                                         document.getElementById('logout-form').submit();">
                         {{ __('Logout') }}
@@ -156,21 +150,52 @@
                 <p class="card-text">{{$item->harga_harian }}</p>
             </div>
             <div class="">
-            <a href="{{ route('sewa.cart', ['id' => $item->idBuku]) }}" class="btn btn-success" >Sewa</a>
-            <button href="{{ route('etalaseBuku.detail', ['idBuku' => $item->idBuku]) }}"  class="button-green btn" ><i class="fa-regular fa-heart"></i></button>
+            <a href="{{ route('sewa.cart', ['id' => $item->idBuku]) }}" class="btn btn-success" >Baca</a>
             <button onclick="window.location.href='{{ route('etalaseBuku.detail', ['idBuku' => $item->idBuku]) }}'" class="button-green btn">
   <i class="fa-solid fa-circle-info"></i>
 </button>
-            <form action="{{ route('favorite.add') }}" method="post">
+            <!--<form action="{{ route('favorite.add') }}" method="post">
                 @csrf
-                <!-- Isi formulir lainnya -->
+                 Isi formulir lainnya 
                 <button type="submit">Tambah ke Favorit</button>
-            </form>
+            </form>-->
             </div>
         </div>
         @endforeach
         @endif
     </div>
+    <!-- Modal code -->
+    <div class="modal fade" id="kodeModal" tabindex="-1" role="dialog" aria-labelledby="checkoutModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="checkoutModalLabel">Konfirmasi Checkout</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Berikut Adalah Kode Anda :</p>
+                </div>
+                <div class="modal-footer">
+                    <!-- Tombol untuk menutup modal -->
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="redirectToPage()">OK</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Periksa apakah ada informasi bahwa checkout berhasil (menggunakan session flash)
+            const checkoutSuccess = '{{ session('checkout_success') }}';
+
+            if (checkoutSuccess == '1') {
+                // Buka modal pada halaman home
+                var newModal = new bootstrap.Modal(document.getElementById('newModal'));
+                newModal.show();
+            }
+        });
+    </script>
 </body>
 
 </html>

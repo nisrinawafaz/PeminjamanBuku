@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Log;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use DataTables;
+use App\Http\Controllers\isEmpty;
+use App\Logs\Logger;
+
 
 class BukuController extends Controller
 {
@@ -26,7 +29,8 @@ class BukuController extends Controller
     {
 
         DB::enableQueryLog(); // Aktifkan query log
-
+        
+        $logger = new Logger();
         $genre = Genre::all();
         $penulis = Penulis::all();
         $penerbit = Penerbit::all();
@@ -61,8 +65,8 @@ class BukuController extends Controller
                     $destinationPath = public_path('storage/admin/file_buku');
                     \File::copy(storage_path('app/' . $upload), $destinationPath . '/' . $nama_file);
                 }
-                $buku = Buku::create([
-                    'idPenulis' => $request->id_penulis,
+                $author = Penulis::find($request->id_penulis);
+                $dataBuku = [
                     'idPenerbit' => $request->id_penerbit,
                     'idGenre' => $request->id_genre,
                     'judul' => $request->judul,
@@ -72,7 +76,8 @@ class BukuController extends Controller
                     'stok' => $request->stok,
                     'harga_harian' => $request->harga,
                     'gambar_cover' => $img
-                ]);
+                ];
+                $book = $author->tambahBukuPenulis($dataBuku);
 
                 return redirect()
                     ->route('buku.index')
@@ -81,7 +86,7 @@ class BukuController extends Controller
                     ]);
             }
         } catch (\Throwable $th) {
-            \Log::error($th);
+            $logger->error($th);
             $error = $th->getMessage();
             return redirect()->route('buku.add')
                 ->with('error', $error);
@@ -119,31 +124,37 @@ class BukuController extends Controller
 
     public function etalaseBuku()
     {
-        Log::info('Menampilkan daftar buku ke user'); // Log info message
+        $logger = new Logger();
         $buku = Buku::where('stok', '>', 0)->get();
+        if($buku->isEmpty()){
+            $logger->warning('tidak ada buku yang tersedia');
+        }
         return view('page.user.buku.etalaseBuku', compact('buku'));
     }
 
     public function etalaseDetail($idBuku)
     {
+        
+        $logger = new Logger();
         // Ambil data buku berdasarkan ID dari database
         $buku = Buku::find($idBuku);
 
         if (!$buku) {
             // Log error message
-            Log::error('Buku tidak ditemukan dengan ID: ' . $idBuku);
+            $logger->error('Buku tidak ditemukan dengan ID: ' . $idBuku);
 
             // Redirect atau tampilkan pesan jika buku tidak ditemukan
             return redirect()->route('buku.index')->with('error', 'Buku tidak ditemukan');
         }
 
-        Log::info('Melihat detail buku dengan ID: ' . $idBuku); // Log info message
+        $logger->info('Melihat detail buku dengan ID: ' . $idBuku); // Log info message
 
         return view('page.user.buku.detailBuku', compact('buku'));
     }
 
     public function UbahBuku(Request $request, $idBuku)
     {
+        $logger = new Logger();
         $genre = Genre::all();
         $penulis = Penulis::all();
         $penerbit = Penerbit::all();
@@ -201,7 +212,7 @@ class BukuController extends Controller
                 return view('page.admin.buku.tabelBuku', compact('buku'));
             }
         } catch (\Throwable $th) {
-            Log::error($th);
+            $logger->error($th);
             $error = $th->getMessage();
             return redirect()->route('buku.edit', ['id' => $idBuku])
                 ->with('error', $error);
@@ -218,36 +229,38 @@ class BukuController extends Controller
 
     public function bukaBuku($idBuku)
     {
+        $logger = new Logger();
         // Ambil data buku berdasarkan ID dari database
         $buku = Buku::find($idBuku);
 
         if (!$buku) {
             // Log error message
-            Log::error('Buku tidak ditemukan dengan ID: ' . $idBuku);
+            $logger->error('Buku tidak ditemukan dengan ID: ' . $idBuku);
 
             // Redirect atau tampilkan pesan jika buku tidak ditemukan
             return redirect()->route('buku.index')->with('error', 'Buku tidak ditemukan');
         }
 
-        Log::info('Membuka buku dengan ID: ' . $idBuku); // Log info message
+        $logger->info('Membuka buku dengan ID: ' . $idBuku); // Log info message
 
         return view('page.admin.buku.bukaFileBuku', compact('buku'));
     }
 
     public function detail($idBuku)
     {
+        $logger = new Logger();
         // Ambil data buku berdasarkan ID dari database
         $buku = Buku::find($idBuku);
 
         if (!$buku) {
             // Log error message
-            Log::error('Buku tidak ditemukan dengan ID: ' . $idBuku);
+            $logger->error('Buku tidak ditemukan dengan ID: ' . $idBuku);
 
             // Redirect atau tampilkan pesan jika buku tidak ditemukan
             return redirect()->route('buku.index')->with('error', 'Buku tidak ditemukan');
         }
 
-        Log::info('Melihat detail buku dengan ID: ' . $idBuku); // Log info message
+        $logger->info('Melihat detail buku dengan ID: ' . $idBuku); // Log info message
 
         return view('page.admin.buku.detailBuku', compact('buku'));
     }

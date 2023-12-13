@@ -65,7 +65,6 @@ Route::group(['prefix' => 'dashboard/admin','middleware'=>'check_roles'], functi
         ->as('akun.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
-            Route::post('showdata', 'dataTable')->name('dataTable');
             Route::match(['get', 'post'], 'tambah', 'tambahAkun')->name('add');
             Route::match(['get', 'post'], '{id}/ubah', 'ubahAkun')->name('edit');
             Route::delete('{id}/hapus', 'hapusAkun')->name('delete');

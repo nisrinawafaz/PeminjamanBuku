@@ -11,9 +11,15 @@ class Penulis extends Model
 
     use HasFactory;
 
+    public function tambahBukuPenulis($dataBuku)
+    {
+        // Logika untuk membuat buku baru
+        return $this->buku()->create($dataBuku);
+    }
+
     public function buku()
     {
-        return $this->hasMany(Buku::class);
+        return $this->hasMany(Buku::class,'idPenulis', 'idPenulis');
     }
 
     /**
