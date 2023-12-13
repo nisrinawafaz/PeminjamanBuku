@@ -33,8 +33,8 @@ class PenerbitsTableSeeder extends Seeder
             ],
             [
                 'perusahaan' => 'Marvel Comics',
-                'alamat' => 'New York',
-                'no_handphone' => '098155589148',
+                'alamat' => 'Kota New York, New York, Amerika',
+                'no_handphone' => '212970413388',
                 'email' => 'marvel.publishing@gmail.com',
                 'created_at' => now(),
                 'updated_at' => now(),
