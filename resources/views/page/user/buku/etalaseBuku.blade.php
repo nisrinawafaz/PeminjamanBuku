@@ -146,8 +146,8 @@
                 @endif
 
                 <h4 class="text-title" id="judul">'{{ $item->judul }}'</h4>
-                <p class="card-text">{{ $item->genre->nama_genre }}</p>
-                <p class="card-text">{{$item->harga_harian }}</p>
+                <p class="card-text">Stok : {{ $item->stok }}</p>
+                <p class="card-text">Rp. {{$item->harga_harian }}</p>
             </div>
             <div class="">
             <a href="{{ route('sewa.cart', ['id' => $item->idBuku]) }}" class="btn btn-success" >Baca</a>
