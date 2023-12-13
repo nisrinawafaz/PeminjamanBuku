@@ -46,6 +46,15 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
+                        <a href="{{ route('peminjaman.export') }}" class="btn btn-success">Export Data</a>
+                        <form action="{{ route('peminjaman.import') }}" method="post" enctype="multipart/form-data">
+                            @csrf
+                            <div class="form-group">
+                                <label for="file">Import Data</label>
+                                <input type="file" name="file" class="form-control">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Import</button>
+                        </form>
                         <table id="previewPeminjaman" class="table table-striped table-bordered display" style="width:100%">
                             <thead>
                                 <tr>
@@ -69,15 +78,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <a href="{{ route('peminjaman.export') }}" class="btn btn-success">Export Data</a>
-                        <form action="{{ route('peminjaman.import') }}" method="post" enctype="multipart/form-data">
-                            @csrf
-                            <div class="form-group">
-                                <label for="file">Import Data</label>
-                                <input type="file" name="file" class="form-control">
-                            </div>
-                            <button type="submit" class="btn btn-primary">Import</button>
-                        </form>
+                        
                     </div>
                 </div>
             </div>

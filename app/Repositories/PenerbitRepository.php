@@ -3,8 +3,9 @@
 namespace App\Repositories;
 
 use App\Models\Penerbit;
+use App\Interfaces\PenerbitRepositoryInterface;
 
-class PenerbitRepository
+class PenerbitRepository implements PenerbitRepositoryInterface
 {
     public function all()
     {

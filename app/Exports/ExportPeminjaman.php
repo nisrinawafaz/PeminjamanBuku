@@ -18,8 +18,8 @@ class ExportPeminjaman implements FromCollection, WithHeadings
         return $historyPeminjaman->map(function ($item) {
             return [
                 'Id Pesanan' => $item->idPeminjaman,
-                'Nama Peminjam' => $item->user->name, // Ganti 'nama' dengan nama kolom yang sesuai pada model User
-                'Judul Buku' => $item->buku->judul, // Ganti 'judul' dengan nama kolom yang sesuai pada model Buku
+                'Nama Peminjam' => $item->user->name,
+                'Judul Buku' => $item->buku->judul,
                 'Tgl Peminjaman' => $item->tgl_peminjaman,
                 'Tgl Pengembalian' => $item->tgl_pengembalian,
                 'Total Bayar' => $item->total_pembayaran,
