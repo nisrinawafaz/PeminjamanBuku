@@ -193,7 +193,7 @@
                     <h5 class="modal-title" id="checkoutModalLabel">Konfirmasi Checkout</h5>
                 </div>
                 <div class="modal-body">
-                    <p>Berikut Adalah Kode Anda :</p>
+                    <p>Berikut Adalah Kode Anda : 1549 098765234256</p>
                 </div>
                 <div class="modal-footer">
                     <!-- Tombol untuk menutup modal -->
