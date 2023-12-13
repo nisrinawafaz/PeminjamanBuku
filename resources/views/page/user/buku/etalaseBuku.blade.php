@@ -70,12 +70,6 @@
             text-decoration: underline;
         }
 
-        .button-action a:visited{
-            color: green;
-            background-color: transparent;
-            text-decoration: none;
-        }
-
         .button-green{
             color: white;
             background-color: #198754;
@@ -156,8 +150,7 @@
                 <p class="card-text">{{$item->harga_harian }}</p>
             </div>
             <div class="">
-            <a href="{{ route('sewa.cart', ['id' => $item->idBuku]) }}" class="btn btn-success" >Sewa</a>
-            <button href="{{ route('etalaseBuku.detail', ['idBuku' => $item->idBuku]) }}"  class="button-green btn" ><i class="fa-regular fa-heart"></i></button>
+            <a href="{{ route('sewa.cart', ['id' => $item->idBuku]) }}" class="btn btn-success" >Baca</a>
             <button onclick="window.location.href='{{ route('etalaseBuku.detail', ['idBuku' => $item->idBuku]) }}'" class="button-green btn">
   <i class="fa-solid fa-circle-info"></i>
 </button>
@@ -171,6 +164,38 @@
         @endforeach
         @endif
     </div>
+    <!-- Modal code -->
+    <div class="modal fade" id="kodeModal" tabindex="-1" role="dialog" aria-labelledby="checkoutModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="checkoutModalLabel">Konfirmasi Checkout</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Berikut Adalah Kode Anda :</p>
+                </div>
+                <div class="modal-footer">
+                    <!-- Tombol untuk menutup modal -->
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="redirectToPage()">OK</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Periksa apakah ada informasi bahwa checkout berhasil (menggunakan session flash)
+            const checkoutSuccess = '{{ session('checkout_success') }}';
+
+            if (checkoutSuccess == '1') {
+                // Buka modal pada halaman home
+                var newModal = new bootstrap.Modal(document.getElementById('newModal'));
+                newModal.show();
+            }
+        });
+    </script>
 </body>
 
 </html>
