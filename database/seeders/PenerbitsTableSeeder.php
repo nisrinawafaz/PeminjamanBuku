@@ -1,7 +1,7 @@
 <?php
- 
+
 namespace Database\Seeders;
- 
+
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -28,6 +28,14 @@ class PenerbitsTableSeeder extends Seeder
                 'alamat' => 'bandung',
                 'no_handphone' => '098194389148',
                 'email' => 'mizan.publishing@gmail.com',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'perusahaan' => 'Marvel Comics',
+                'alamat' => 'New York',
+                'no_handphone' => '098155589148',
+                'email' => 'marvel.publishing@gmail.com',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]
