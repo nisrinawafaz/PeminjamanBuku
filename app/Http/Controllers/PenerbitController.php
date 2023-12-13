@@ -4,24 +4,33 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Penerbit;
+use App\Repositories\PenerbitRepository;
+use App\Validator\PenerbitValidation;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use DataTables;
 
 class PenerbitController extends Controller
 {
+    protected $penerbitRepository;
+
+    public function __construct(PenerbitRepository $penerbitRepository)
+    {
+        $this->penerbitRepository = $penerbitRepository;
+    }
     public function tambahPenerbit(Request $request)
     {
         DB::enableQueryLog();
         try{
         if ($request->isMethod('post')) {
-            $this->validate($request, [
-                'perusahaan' => 'required',
-                'alamat' => 'required',
-                'no_handphone' => 'required',
-                'email' => 'required|email',
+            // $this->validate($request, [
+            //     'perusahaan' => 'required',
+            //     'alamat' => 'required',
+            //     'no_handphone' => 'required',
+            //     'email' => 'required|email',
                 
-            ]);
-            
+            // ]);
+            PenerbitValidation::validatePenerbit($request);
             $penerbit = Penerbit::create([
                 'perusahaan' => $request->perusahaan,
                 'alamat' => $request->alamat,
@@ -82,10 +91,10 @@ class PenerbitController extends Controller
 
                     return '<a href="' . $detailUrl . '" class="btn btn-warning"><i class="fas fa-info-circle"></i></a>
                             <a href="' . $editUrl . '" class="btn btn-primary"><i class="fas fa-edit"></i></a>
-                            <a href="' . $deleteUrl . '" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                            <form id="delete-form-' . $row->idPenerbit . '" action="' . $deleteUrl . '" method="POST" style="display: none;">
-                                @csrf
-                                @method(\'delete\')
+                            <form action="' . $deleteUrl . '" method="POST" style="display:inline;">
+                                ' . csrf_field() . '
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i></button>
                             </form>';
                 })
                 ->rawColumns(['options'])
@@ -99,6 +108,7 @@ class PenerbitController extends Controller
     {
         try{
         $penerbit = Penerbit::findOrFail($id);
+        //$penerbit = $this->penerbitRepository->find($id);
         if ($request->isMethod('post')) {
             $this->validate($request, [
                 'perusahaan' => 'required',
@@ -126,7 +136,7 @@ class PenerbitController extends Controller
         } catch (\Throwable $th) {
             Log::error($th);
             $error = $th->getMessage();
-            return redirect()->route('penerbit.edit', ['id' => $idPenerbit])
+            return redirect()->route('penerbit.edit', ['id' => $id])
                 ->with('error', $error);
         }
         
@@ -137,8 +147,9 @@ class PenerbitController extends Controller
 
     public function hapusPenerbit($id)
     {
-        $penerbit = Penerbit::findOrFail($id);
-        $penerbit -> delete();
+        // $penerbit = Penerbit::findOrFail($id);
+        // $penerbit -> delete();
+        $this->penerbitRepository->delete($id);
 
         return redirect()->route('penerbit.tabel')->with('success', 'Penerbit berhasil dihapus');
     }
