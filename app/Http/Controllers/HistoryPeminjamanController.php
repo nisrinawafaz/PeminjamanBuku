@@ -83,6 +83,14 @@ class HistoryPeminjamanController extends Controller
     public function tambahPeminjaman(Request $request)
     {
         try {
+            $this->validate($request, [
+                'idBuku' => 'required|exists:bukus,id',
+                'idUser' => 'required|exists:users,id',
+                'lamaSewa' => 'required|integer|min:1',
+                'hargaBuku' => 'required|numeric|min:0',
+                'bank' => ['required', Rule::in(['BCA', 'BSI', 'BRI', 'Mandiri'])], // Menetapkan pilihan bank yang valid
+            ]);
+
             \Log::info($request->all());
             $peminjaman = History_Peminjaman::create([
                 'idPeminjaman' => 1,
