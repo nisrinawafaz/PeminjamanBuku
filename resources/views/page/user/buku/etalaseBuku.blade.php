@@ -70,12 +70,6 @@
             text-decoration: underline;
         }
 
-        .button-action a:visited{
-            color: green;
-            background-color: transparent;
-            text-decoration: none;
-        }
-
         .button-green{
             color: white;
             background-color: #198754;
@@ -94,25 +88,25 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-white fixed-top navbar-scroll">
         <div class="container">
-            <ul class="nav">
+            <!--<ul class="nav">
                 <li class="nav-item">
                     <a class="nav-link" href="#">Catalog</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Profile</a>
                 </li>
-            </ul>
+            </ul>-->
             <a class="navbar-brand" href="#">KOLEKSI KATA</a><!--{{Auth::user()->email}}-->
             <ul class="nav">
-                <li class="nav-item">
+                <!--<li class="nav-item">
                     <a class="nav-link" href="{{route('favorites.index')}}">Favorite</a>
-                </li>
+                </li>-->
                 <li class="nav-item">
                 <a class="nav-link" href="{{ route('sewa.show', ['id' => Auth::user()->id]) }}">My Book</a>
                 </li>
-                <li>
+                <li class="nav-item">
                     
-                    <a  href="{{ route('logout') }}"
+                    <a  class="nav-link" href="{{ route('logout') }}"
                         onclick="event.preventDefault();
                                         document.getElementById('logout-form').submit();">
                         {{ __('Logout') }}
@@ -152,25 +146,25 @@
                 @endif
 
                 <h4 class="text-title" id="judul">'{{ $item->judul }}'</h4>
-                <p class="card-text">{{ $item->genre->nama_genre }}</p>
-                <p class="card-text">{{$item->harga_harian }}</p>
+                <p class="card-text">Stok : {{ $item->stok }}</p>
+                <p class="card-text">Rp. {{$item->harga_harian }}</p>
             </div>
             <div class="">
-            <a href="{{ route('sewa.cart', ['id' => $item->idBuku]) }}" class="btn btn-success" >Sewa</a>
-            <button href="{{ route('etalaseBuku.detail', ['idBuku' => $item->idBuku]) }}"  class="button-green btn" ><i class="fa-regular fa-heart"></i></button>
+            <a href="{{ route('sewa.cart', ['id' => $item->idBuku]) }}" class="btn btn-success" >Baca</a>
             <button onclick="window.location.href='{{ route('etalaseBuku.detail', ['idBuku' => $item->idBuku]) }}'" class="button-green btn">
   <i class="fa-solid fa-circle-info"></i>
 </button>
-            <form action="{{ route('favorite.add') }}" method="post">
+            <!--<form action="{{ route('favorite.add') }}" method="post">
                 @csrf
-                <!-- Isi formulir lainnya -->
+                 Isi formulir lainnya 
                 <button type="submit">Tambah ke Favorit</button>
-            </form>
+            </form>-->
             </div>
         </div>
         @endforeach
         @endif
     </div>
+
 </body>
 
 </html>

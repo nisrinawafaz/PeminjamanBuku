@@ -65,22 +65,29 @@ class PenulisController extends Controller
     
     public function tambahPenulis(Request $request)
     {
-        if ($request->isMethod('post')) {
-            $this->validate($request, [
-                'nama_lengkap' => 'required|string|max:255',
-                'domisili' => 'required|string|max:255',
-                'tanggal_lahir' => 'required|date',
-                'email' => 'required|string|email|unique:penulis,email',
-            ]);
+        try {
+            if ($request->isMethod('post')) {
+                $this->validate($request, [
+                    'nama_lengkap' => 'required|string|max:255',
+                    'domisili' => 'required|string|max:255',
+                    'tanggal_lahir' => 'required|date',
+                    'email' => 'required|string|email|unique:penulis,email',
+                ]);
 
-            $penulis = Penulis::create([
-                'nama_lengkap' => $request->nama_lengkap,
-                'domisili' => $request->domisili,
-                'tanggal_lahir' => $request->tanggal_lahir,
-                'email' => $request->email
-            ]);
+                $penulis = Penulis::create([
+                    'nama_lengkap' => $request->nama_lengkap,
+                    'domisili' => $request->domisili,
+                    'tanggal_lahir' => $request->tanggal_lahir,
+                    'email' => $request->email
+                ]);
 
-            return redirect()->route('penulis.index')->with('status', 'Data penulis berhasil ditambahkan');
+                return redirect()->route('penulis.index')->with('status', 'Data penulis berhasil ditambahkan');
+            }
+        } catch (\Throwable $th) {
+            $logger->error($th);
+            $error = $th->getMessage();
+            return redirect()->route('penulis.add')
+                ->with('error', $error);
         }
 
         return view('page.admin.penulis.addPenulis');

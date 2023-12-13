@@ -99,11 +99,7 @@ class HistoryPeminjamanController extends Controller
                 'stok' => $buku->stok - 1,
             ]);
 
-            return redirect()
-                ->route('etalaseBuku.etalasebuku')
-                ->with([
-                    'success' => 'New post has been created successfully'
-                ]);
+            return response()->json(['success' => true, 'checkout_success' => true]);
         } catch (\Throwable $th) {
             \Log::error($th);
             $error = $th->getMessage();
