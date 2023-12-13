@@ -68,7 +68,7 @@
             <div class="form-group">
                 <label for="inputnohp">Nomor Handphone</label>
                 <input type="number" min="1" step="1" id="inputnohp" name="no_handphone"
-                    class="form-control @error('no_handphone') is-invalid @enderror" placeholder="no_handphone /hari"
+                    class="form-control @error('no_handphone') is-invalid @enderror" placeholder="no_handphone"
                     value="{{ old('no_handphone') }}"
                     required="required"
                     autocomplete="no_handphone">

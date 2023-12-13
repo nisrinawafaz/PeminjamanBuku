@@ -119,7 +119,7 @@ Route::group(['prefix' => 'dashboard/admin','middleware'=>'check_roles'], functi
 
             // Route::post('/dataTable', 'BukuController@dataTable')->name('dataTable');
             Route::match(['get', 'post'], '/tambahPenerbit', 'tambahPenerbit')->name('add');
-            Route::delete('{id}/buku/hapus/', 'hapusPenerbit')->name('hapus');
+            Route::delete('{idPenerbit}/hapus/', 'hapusPenerbit')->name('hapus');
             Route::match(['get', 'post'], '{id}/ubahpenerbit', 'ubahPenerbit')->name('edit');
             //Route::delete('{id}/hapus', 'hapusBuku')->name('delete');
         });
