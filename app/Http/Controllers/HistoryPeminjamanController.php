@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Exports\ExportPeminjaman;
 use App\Imports\ImportPeminjaman;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Validation\Rule;
 use DataTables;
 
 class HistoryPeminjamanController extends Controller
