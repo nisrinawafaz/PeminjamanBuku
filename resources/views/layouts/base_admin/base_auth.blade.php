@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>@yield('judul') | Laravel 9 - AdminLTE 3</title>
+        <title>@yield('judul') | Laravel 9 - Peminjaman Buku</title>
 
         <!-- Google Font: Source Sans Pro -->
         <link
