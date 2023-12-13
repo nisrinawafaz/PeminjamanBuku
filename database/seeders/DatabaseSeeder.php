@@ -15,11 +15,11 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
-        // $this->call(UsersTableSeeder::class);
-        // $this->call(PenerbitsTableSeeder::class);
-        // $this->call(GenresTableSeeder::class);
-        // $this->call(PenulisTableSeeder::class);
-        // $this->call(BukusTableSeeder::class);
-        $this->call(HistoryPeminjamanTableSeeder::class);
+        //$this->call(UsersTableSeeder::class);
+        //$this->call(PenerbitsTableSeeder::class);
+        //$this->call(GenresTableSeeder::class);
+        $this->call(PenulisTableSeeder::class);
+        //$this->call(BukusTableSeeder::class);
+        //$this->call(HistoryPeminjamanTableSeeder::class);
     }
 }

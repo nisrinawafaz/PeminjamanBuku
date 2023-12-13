@@ -1,9 +1,10 @@
 <?php
- 
+
 namespace Database\Seeders;
- 
+
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Faker\Factory as Faker;
 
 class BukusTableSeeder extends Seeder
 {
@@ -14,35 +15,23 @@ class BukusTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('bukus')->insert([
-            [
-                'idPenulis' => 1,
-                'idPenerbit' => 1,
-                'idGenre' => 1,
-                'judul' => 'halo',
-                'tahun_terbit' => '2019',
-                'deskripsi' => 'buku pelajaran',
+        $faker = Faker::create();
+
+        for ($i = 0; $i < 10; $i++) {
+            DB::table('bukus')->insert([
+                'idPenulis' => $faker->numberBetween(1, 10),
+                'idPenerbit' => $faker->numberBetween(1, 10),
+                'idGenre' => $faker->numberBetween(1, 10),
+                'judul' => $faker->sentence,
+                'tahun_terbit' => $faker->year,
+                'deskripsi' => $faker->paragraph,
                 'path_file' => 'coba.jpg',
-                'stok' => 2,
-                'harga_harian' => 7000,
-                'gambar_cover' => 'coba.jpg',
+                'stok' => $faker->numberBetween(1, 50),
+                'harga_harian' => $faker->numberBetween(5000, 20000),
+                'gambar_cover' => $faker->randomElement(['coba.jpg', 'coba1.jpg']),
                 'created_at' => now(),
                 'updated_at' => now(),
-            ],
-            [
-                'idPenulis' => 2,
-                'idPenerbit' => 2,
-                'idGenre' => 2,
-                'judul' => 'bandung',
-                'tahun_terbit' => '2022',
-                'deskripsi' => 'buku sejarah',
-                'path_file' => 'coba1.jpg',
-                'stok' => 3,
-                'harga_harian' => 9000,
-                'gambar_cover' => 'coba1.jpg',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
-        ]);
+            ]);
+        }
     }
 }
