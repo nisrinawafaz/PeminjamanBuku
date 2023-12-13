@@ -7,87 +7,39 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Exception;
+use Illuminate\Support\Facades\DB;
+use DataTables;
 
 class AkunController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->ajax()) {
+            $columns = ['name', 'email', 'user_image', 'id'];
+            $totalDataRecord = User::where('id', '!=', Auth::id())->where('roles', false)->count();
+
+            $dataTable = DataTables::of(User::where('id', '!=', Auth::id())->where('roles', false)->select($columns));
+
+            $dataTable->addColumn('user_image', function ($user) {
+                $img = $user->user_image ? $user->user_image : asset('vendor/adminlte3/img/user2-160x160.jpg');
+                return "<img src='$img' class='img-thumbnail' width='200px'>";
+            });
+
+            $dataTable->addColumn('options', function ($user) {
+                $editUrl = route('akun.edit', ['id' => $user->id]);
+                $deleteUrl = route('akun.delete', $user->id);
+                return "<a href='$editUrl'><i class='fas fa-edit fa-lg'></i></a> 
+                        <a style='border: none; background-color:transparent;' class='hapusData' data-id='$user->id' data-url='$deleteUrl'>
+                            <i class='fas fa-trash fa-lg text-danger'></i>
+                        </a>";
+            });
+
+            $dataTable->rawColumns(['user_image', 'options']);
+            return $dataTable->make(true);
+        }
+
         return view('page.admin.akun.index');
-    }
-
-    public function dataTable(Request $request)
-    {
-        $totalFilteredRecord = $totalDataRecord = $draw_val = "";
-        $columns_list = array(
-            0 => 'name',
-            1 => 'email',
-            2 => 'user_image',
-            3 => 'id',
-        );
-
-        $totalDataRecord = User::count();
-
-        $totalFilteredRecord = $totalDataRecord;
-
-        $limit_val = $request->input('length');
-        $start_val = $request->input('start');
-        $order_val = $columns_list[$request->input('order.0.column')];
-        $dir_val = $request->input('order.0.dir');
-
-        if(empty($request->input('search.value')))
-        {
-            $akun_data = User::where('id','!=',Auth::id())
-            ->offset($start_val)
-            ->limit($limit_val)
-            ->orderBy($order_val,$dir_val)
-            ->get();
-        } else {
-            $search_text = $request->input('search.value');
-
-            $akun_data =  User::where('id','!=',Auth::id())
-            ->where('id','LIKE',"%{$search_text}%")
-            ->orWhere('name', 'LIKE',"%{$search_text}%")
-            ->orWhere('email', 'LIKE',"%{$search_text}%")
-            ->offset($start_val)
-            ->limit($limit_val)
-            ->orderBy($order_val,$dir_val)
-            ->get();
-
-            $totalFilteredRecord = User::where('id','!=',Auth::id())
-            ->where('id','LIKE',"%{$search_text}%")
-            ->orWhere('name', 'LIKE',"%{$search_text}%")
-            ->orWhere('email', 'LIKE',"%{$search_text}%")
-            ->count();
-        }
-
-        $data_val = array();
-        if(!empty($akun_data))
-        {
-            foreach ($akun_data as $akun_val)
-            {
-                $url = route('akun.edit',['id' => $akun_val->id]);
-                $urlHapus = route('akun.delete',$akun_val->id);
-                if ($akun_val->user_image) {
-                    $img = $akun_val->user_image;
-                } else {
-                    $img = asset('vendor/adminlte3/img/user2-160x160.jpg');
-                }
-                $akunnestedData['name'] = $akun_val->name;
-                $akunnestedData['email'] = $akun_val->email;
-                $akunnestedData['user_image'] = "<img src='$img' class='img-thumbnail' width='200px'>";
-                $akunnestedData['options'] = "<a href='$url'><i class='fas fa-edit fa-lg'></i></a> <a style='border: none; background-color:transparent;' class='hapusData' data-id='$akun_val->id' data-url='$urlHapus'><i class='fas fa-trash fa-lg text-danger'></i></a>";
-                $data_val[] = $akunnestedData;
-            }
-        }
-        $draw_val = $request->input('draw');
-        $get_json_data = array(
-        "draw"            => intval($draw_val),
-        "recordsTotal"    => intval($totalDataRecord),
-        "recordsFiltered" => intval($totalFilteredRecord),
-        "data"            => $data_val
-        );
-
-        echo json_encode($get_json_data);
     }
 
     public function tambahAkun(Request $request)
